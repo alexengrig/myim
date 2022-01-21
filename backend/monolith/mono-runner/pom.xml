@@ -31,4 +31,11 @@
     <name>runner</name>
     <description>Monolithic myim application runner</description>
 
+    <dependencies>
+        <dependency>
+            <groupId>dev.alexengrig.myim</groupId>
+            <artifactId>mono-recipient-service</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
