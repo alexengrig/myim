@@ -16,30 +16,22 @@
 
 package dev.alexengrig.myim.mono.recipient.payload;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 @SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
-public class MessageRequest {
+public class ChatMessageRequest extends MessageRequest {
 
-    private String text;
+    private String chatId;
 
-    protected MessageRequest(MessageRequest that) {
-        this(that.text);
-    }
-
-    public ChatMessageRequest withChatId(String chatId) {
-        return new ChatMessageRequest(this, chatId);
+    protected ChatMessageRequest(MessageRequest parent, String chatId) {
+        super(parent);
+        this.chatId = chatId;
     }
 
 }
