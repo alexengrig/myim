@@ -19,6 +19,7 @@ package dev.alexengrig.myim.mono.recipient.controller;
 import dev.alexengrig.myim.mono.recipient.domain.ChatMessage;
 import dev.alexengrig.myim.mono.recipient.domain.ChatMessageStatus;
 import dev.alexengrig.myim.mono.recipient.payload.ChatMessageRequest;
+import dev.alexengrig.myim.mono.recipient.payload.ChatMessageStatusResponse;
 import dev.alexengrig.myim.mono.recipient.payload.MessageRequest;
 import dev.alexengrig.myim.mono.recipient.service.ChatService;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,8 @@ public class ChatController {
         log.info("Create message: {}", request);
         ChatMessage message = conversionService.convert(request, ChatMessage.class);
         ChatMessageStatus status = chatService.sendMessage(message);
-        log.info("Send status: {}", status);
+        ChatMessageStatusResponse response = conversionService.convert(status, ChatMessageStatusResponse.class);
+        log.info("Send status: {}", response);
     }
 
 }
