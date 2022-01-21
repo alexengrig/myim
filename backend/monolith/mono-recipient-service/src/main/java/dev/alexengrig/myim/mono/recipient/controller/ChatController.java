@@ -16,6 +16,7 @@
 
 package dev.alexengrig.myim.mono.recipient.controller;
 
+import dev.alexengrig.myim.mono.recipient.payload.ChatMessageRequest;
 import dev.alexengrig.myim.mono.recipient.payload.MessageRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +34,8 @@ public class ChatController {
     public void createMessage(
             @PathVariable String chatId,
             @RequestBody MessageRequest messageRequest) {
-        log.info("Create message for chatId={}: {}", chatId, messageRequest);
+        ChatMessageRequest request = messageRequest.withChatId(chatId);
+        log.info("Create message: {}", request);
     }
 
 }
