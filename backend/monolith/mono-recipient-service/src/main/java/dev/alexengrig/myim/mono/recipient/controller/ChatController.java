@@ -16,9 +16,12 @@
 
 package dev.alexengrig.myim.mono.recipient.controller;
 
+import dev.alexengrig.myim.mono.recipient.domain.ChatMessage;
 import dev.alexengrig.myim.mono.recipient.payload.ChatMessageRequest;
 import dev.alexengrig.myim.mono.recipient.payload.MessageRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +31,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/recipient/chats")
+@RequiredArgsConstructor
 public class ChatController {
+
+    private final ConversionService conversionService;
 
     @PostMapping("/{chatId}/messages")
     public void createMessage(
@@ -36,6 +42,8 @@ public class ChatController {
             @RequestBody MessageRequest messageRequest) {
         ChatMessageRequest request = messageRequest.withChatId(chatId);
         log.info("Create message: {}", request);
+        ChatMessage message = conversionService.convert(request, ChatMessage.class);
+        log.info("Created message: {}", message);
     }
 
 }
