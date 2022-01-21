@@ -28,6 +28,7 @@
     <description>Monolithic myim application</description>
 
     <modules>
+        <module>mono-recipient-service</module>
         <module>mono-runner</module>
     </modules>
 
