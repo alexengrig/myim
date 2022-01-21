@@ -17,8 +17,10 @@
 package dev.alexengrig.myim.mono.recipient.controller;
 
 import dev.alexengrig.myim.mono.recipient.domain.ChatMessage;
+import dev.alexengrig.myim.mono.recipient.domain.ChatMessageStatus;
 import dev.alexengrig.myim.mono.recipient.payload.ChatMessageRequest;
 import dev.alexengrig.myim.mono.recipient.payload.MessageRequest;
+import dev.alexengrig.myim.mono.recipient.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionService;
@@ -34,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ChatController {
 
+    private final ChatService chatService;
     private final ConversionService conversionService;
 
     @PostMapping("/{chatId}/messages")
@@ -43,7 +46,8 @@ public class ChatController {
         ChatMessageRequest request = messageRequest.withChatId(chatId);
         log.info("Create message: {}", request);
         ChatMessage message = conversionService.convert(request, ChatMessage.class);
-        log.info("Created message: {}", message);
+        ChatMessageStatus status = chatService.sendMessage(message);
+        log.info("Send status: {}", status);
     }
 
 }
