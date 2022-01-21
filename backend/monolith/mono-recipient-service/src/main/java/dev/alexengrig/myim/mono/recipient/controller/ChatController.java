@@ -25,6 +25,7 @@ import dev.alexengrig.myim.mono.recipient.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,15 +42,16 @@ public class ChatController {
     private final ConversionService conversionService;
 
     @PostMapping("/{chatId}/messages")
-    public void createMessage(
+    public ResponseEntity<ChatMessageStatusResponse> createMessage(
             @PathVariable String chatId,
             @RequestBody MessageRequest messageRequest) {
         ChatMessageRequest request = messageRequest.withChatId(chatId);
-        log.info("Create message: {}", request);
+        log.info("Message creation request: {}", request);
         ChatMessage message = conversionService.convert(request, ChatMessage.class);
         ChatMessageStatus status = chatService.sendMessage(message);
         ChatMessageStatusResponse response = conversionService.convert(status, ChatMessageStatusResponse.class);
-        log.info("Send status: {}", response);
+        log.info("Message creation response: {}", response);
+        return ResponseEntity.ok(response);
     }
 
 }
