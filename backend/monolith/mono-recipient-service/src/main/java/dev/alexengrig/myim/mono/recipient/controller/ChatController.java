@@ -16,9 +16,11 @@
 
 package dev.alexengrig.myim.mono.recipient.controller;
 
+import dev.alexengrig.myim.mono.recipient.payload.MessageRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,8 +30,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatController {
 
     @PostMapping("/{chatId}/message")
-    public void createMessage(@PathVariable String chatId) {
-        log.info("Create message for chatId={}", chatId);
+    public void createMessage(
+            @PathVariable String chatId,
+            @RequestBody MessageRequest messageRequest) {
+        log.info("Create message for chatId={}: {}", chatId, messageRequest);
     }
 
 }
