@@ -16,10 +16,20 @@
 
 package dev.alexengrig.myim.mono.recipient.controller;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/recipient/chats")
 public class ChatController {
+
+    @PostMapping("/{chatId}/messages")
+    public void createMessage(@PathVariable String chatId) {
+        log.info("Create message for chatId={}", chatId);
+    }
+
 }
