@@ -18,9 +18,11 @@ package dev.alexengrig.myim.mono.sender.controller;
 
 import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchParams;
 import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchResult;
+import dev.alexengrig.myim.mono.sender.payload.ChatMessageSearchResponse;
 import dev.alexengrig.myim.mono.sender.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +39,7 @@ public class ChatController {
     private static final String DEFAULT_MESSAGES_OFFSET = "0";
 
     private final ChatService chatService;
+    private final ConversionService conversionService;
 
     @GetMapping("/{chatId}/messages")
     public void getMessages(
@@ -50,7 +53,8 @@ public class ChatController {
                 .offset(offset)
                 .build();
         ChatMessageSearchResult result = chatService.searchMessages(params);
-        log.info("Message search result: {}", result);
+        ChatMessageSearchResponse response = conversionService.convert(result, ChatMessageSearchResponse.class);
+        log.info("Message search result: {}", response);
     }
 
 }
