@@ -1,1 +1,13 @@
 GET http://localhost:8080/api/v1/sender/chats/1337/messages
+
+###
+
+GET http://localhost:8080/api/v1/sender/chats/1337/messages?size=100
+
+###
+
+GET http://localhost:8080/api/v1/sender/chats/1337/messages?offset=10
+
+###
+
+GET http://localhost:8080/api/v1/sender/chats/1337/messages?size=20&offset=10

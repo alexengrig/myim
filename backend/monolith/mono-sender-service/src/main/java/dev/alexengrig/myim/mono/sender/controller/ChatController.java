@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -27,9 +28,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/sender/chats")
 public class ChatController {
 
+    private static final String DEFAULT_MESSAGES_SIZE = "10";
+    private static final String DEFAULT_MESSAGES_OFFSET = "0";
+
     @GetMapping("/{chatId}/messages")
-    public void getMessages(@PathVariable String chatId) {
-        log.info("Get messages for chatId={}", chatId);
+    public void getMessages(
+            @PathVariable String chatId,
+            @RequestParam(defaultValue = DEFAULT_MESSAGES_SIZE) int size,
+            @RequestParam(defaultValue = DEFAULT_MESSAGES_OFFSET) int offset) {
+        log.info("Get messages for chatId={} with size={} and offset={}", chatId, size, offset);
     }
 
 }
