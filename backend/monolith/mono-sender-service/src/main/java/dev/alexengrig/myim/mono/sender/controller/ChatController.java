@@ -16,6 +16,7 @@
 
 package dev.alexengrig.myim.mono.sender.controller;
 
+import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchParams;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +38,12 @@ public class ChatController {
             @RequestParam(defaultValue = DEFAULT_MESSAGES_SIZE) int size,
             @RequestParam(defaultValue = DEFAULT_MESSAGES_OFFSET) int offset) {
         log.info("Get messages for chatId={} with size={} and offset={}", chatId, size, offset);
+        ChatMessageSearchParams params = ChatMessageSearchParams.builder()
+                .chatId(chatId)
+                .size(size)
+                .offset(offset)
+                .build();
+        log.info("Message search params: {}", params);
     }
 
 }
