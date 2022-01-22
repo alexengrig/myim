@@ -36,6 +36,10 @@
             <groupId>dev.alexengrig.myim</groupId>
             <artifactId>mono-recipient-service</artifactId>
         </dependency>
+        <dependency>
+            <groupId>dev.alexengrig.myim</groupId>
+            <artifactId>mono-sender-service</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
