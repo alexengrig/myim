@@ -23,6 +23,7 @@ import dev.alexengrig.myim.mono.sender.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,11 +43,11 @@ public class ChatController {
     private final ConversionService conversionService;
 
     @GetMapping("/{chatId}/messages")
-    public void getMessages(
+    public ResponseEntity<ChatMessageSearchResponse> getMessages(
             @PathVariable String chatId,
             @RequestParam(defaultValue = DEFAULT_MESSAGES_SIZE) int size,
             @RequestParam(defaultValue = DEFAULT_MESSAGES_OFFSET) int offset) {
-        log.info("Get messages for chatId={} with size={} and offset={}", chatId, size, offset);
+        log.info("Messages getting request: chatId={}, size={}, offset={}", chatId, size, offset);
         ChatMessageSearchParams params = ChatMessageSearchParams.builder()
                 .chatId(chatId)
                 .size(size)
@@ -54,7 +55,8 @@ public class ChatController {
                 .build();
         ChatMessageSearchResult result = chatService.searchMessages(params);
         ChatMessageSearchResponse response = conversionService.convert(result, ChatMessageSearchResponse.class);
-        log.info("Message search result: {}", response);
+        log.info("Messages getting response: {}", response);
+        return ResponseEntity.ok(response);
     }
 
 }
