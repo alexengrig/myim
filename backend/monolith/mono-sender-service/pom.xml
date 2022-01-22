@@ -26,19 +26,15 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mono-runner</artifactId>
+    <artifactId>mono-sender-service</artifactId>
 
-    <name>runner</name>
-    <description>Monolithic myim application runner</description>
+    <name>sender-service</name>
+    <description>Monolithic myim sender service</description>
 
     <dependencies>
         <dependency>
-            <groupId>dev.alexengrig.myim</groupId>
-            <artifactId>mono-recipient-service</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>dev.alexengrig.myim</groupId>
-            <artifactId>mono-sender-service</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
     </dependencies>
 

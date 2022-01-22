@@ -30,6 +30,7 @@
     <modules>
         <module>mono-recipient-service</module>
         <module>mono-runner</module>
+        <module>mono-sender-service</module>
     </modules>
 
     <properties>
@@ -52,6 +53,11 @@
             <dependency>
                 <groupId>dev.alexengrig.myim</groupId>
                 <artifactId>mono-recipient-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>dev.alexengrig.myim</groupId>
+                <artifactId>mono-sender-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

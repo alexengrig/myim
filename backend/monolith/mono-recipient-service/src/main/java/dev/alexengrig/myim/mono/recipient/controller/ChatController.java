@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
-@RestController
+@RestController("chatRecipientController")
 @RequestMapping("/api/v1/recipient/chats")
 @RequiredArgsConstructor
 public class ChatController {
