@@ -30,6 +30,7 @@
     <modules>
         <module>mono-recipient-service</module>
         <module>mono-runner</module>
+        <module>mono-sender-service</module>
     </modules>
 
     <properties>
