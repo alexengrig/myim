@@ -38,13 +38,29 @@ const MyimApplication = () => {
   const [chats, setChats] = useState([])
   const [chat, setChat] = useState(null)
   const [messagesByChatId, setMessagesByChatId] = useState(initMessagesByChatId)
-  const handleChatClick = chatId => {
-    const newChat = chats.find(chat => chat.id === chatId)
-    setChat({
-      id: newChat.id,
-      name: newChat.name,
-      messages: messagesByChatId[newChat.id]
+  const handleChatMessagesFetch = chatId => {
+    fetch(`http://localhost:8080/api/v1/sender/chats/${chatId}/messages`, {
+      headers: {
+        'Accept': 'application/json'
+      }
     })
+      .then(response => response.json())
+      .then(data => data.values)
+      .then((messages = []) => {
+        const chat = chats.find(chat => chat.id === chatId)
+        setChat({
+          id: chat.id,
+          name: chat.name,
+          messages: messages.map(({ id, text, authorId, authorName }) => ({
+            id: id,
+            text: text,
+            author: {
+              id: authorId,
+              name: authorName
+            }
+          }))
+        })
+      })
   }
   const handleSend = (chatId, text) => {
     const newMessage = {
@@ -70,7 +86,8 @@ const MyimApplication = () => {
       headers: {
         'Accept': 'application/json'
       }
-    }).then(response => response.json())
+    })
+      .then(response => response.json())
       .then(data => data.values)
       .then((chats = []) => setChats(chats.map(({ id, name }) => ({ id, name }))))
   }
@@ -83,7 +100,7 @@ const MyimApplication = () => {
           <ChatList
             value={chats}
             selectedId={chat && chat.id}
-            onChatClick={handleChatClick}
+            onChatClick={handleChatMessagesFetch}
           /> :
           <NoChatList/>}
         {chat ?
