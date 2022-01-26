@@ -16,9 +16,7 @@
 
 package dev.alexengrig.myim.mono.sender.service;
 
-import dev.alexengrig.myim.mono.sender.domain.ChatMessage;
-import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchParams;
-import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchResult;
+import dev.alexengrig.myim.mono.sender.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,9 +35,25 @@ public class RandomChatService implements ChatService {
     private final Random random = new Random();
 
     @Override
+    public ChatSearchResult searchChats(ChatSearchParams params) {
+        List<Chat> values = IntStream.rangeClosed(1, params.getSize())
+                .mapToObj(i -> "Chat #" + i)
+                .map(name -> Chat.builder()
+                        .id(String.valueOf(random.nextInt()))
+                        .name(name)
+                        .build())
+                .collect(Collectors.toList());
+        return ChatSearchResult.builder()
+                .params(params)
+                .values(values)
+                .total(params.getSize())
+                .build();
+    }
+
+    @Override
     public ChatMessageSearchResult searchMessages(ChatMessageSearchParams params) {
         String chatId = params.getChatId();
-        List<ChatMessage> values = IntStream.rangeClosed(0, params.getSize())
+        List<ChatMessage> values = IntStream.rangeClosed(1, params.getSize())
                 .mapToObj(this::randomText)
                 .map(text -> ChatMessage.builder()
                         .chatId(chatId)

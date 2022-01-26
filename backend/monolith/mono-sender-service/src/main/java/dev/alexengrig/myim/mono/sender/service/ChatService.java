@@ -18,8 +18,12 @@ package dev.alexengrig.myim.mono.sender.service;
 
 import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchParams;
 import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchResult;
+import dev.alexengrig.myim.mono.sender.domain.ChatSearchParams;
+import dev.alexengrig.myim.mono.sender.domain.ChatSearchResult;
 
 public interface ChatService {
+
+    ChatSearchResult searchChats(ChatSearchParams params);
 
     ChatMessageSearchResult searchMessages(ChatMessageSearchParams params);
 
