@@ -16,6 +16,7 @@
 
 import { useState } from 'react'
 import { Chat, ChatList, NoChat, NoChatList } from './components'
+import { ApplicationContext } from './contexts'
 
 const initChats = [
   { id: '1', name: 'ChatItem #1' },
@@ -56,8 +57,8 @@ const MyimApplication = () => {
     const newMessage = {
       text,
       author: {
-        id: '1',
-        name: 'User #1'
+        id: user.id,
+        name: user.name
       }
     }
     setChat({
@@ -69,23 +70,27 @@ const MyimApplication = () => {
       [chatId]: [...messagesByChatId[chatId], newMessage]
     })
   }
+  const [user] = useState({ id: '1', name: 'User #1' })
+  const context = { userId: user.id }
   return (
-    <div>
-      <h1>myim</h1>
-      {(chats && chats.length) ?
-        <ChatList
-          value={chats}
-          selectedId={chat && chat.id}
-          onChatClick={handleChatClick}
-        /> :
-        <NoChatList/>}
-      {chat ?
-        <Chat
-          value={chat}
-          onSend={handleSend}
-        /> :
-        <NoChat/>}
-    </div>
+    <ApplicationContext.Provider value={context}>
+      <div>
+        <h1>myim | {user.name}</h1>
+        {(chats && chats.length) ?
+          <ChatList
+            value={chats}
+            selectedId={chat && chat.id}
+            onChatClick={handleChatClick}
+          /> :
+          <NoChatList/>}
+        {chat ?
+          <Chat
+            value={chat}
+            onSend={handleSend}
+          /> :
+          <NoChat/>}
+      </div>
+    </ApplicationContext.Provider>
   )
 }
 
