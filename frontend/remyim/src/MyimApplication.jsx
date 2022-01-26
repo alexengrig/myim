@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Chat, ChatList, NoChat, NoChatList } from './components'
 import { ApplicationContext } from './contexts'
-
-const initChats = [
-  { id: '1', name: 'ChatItem #1' },
-  { id: '2', name: 'ChatItem #2' },
-  { id: '3', name: 'ChatItem #3' },
-  { id: '4', name: 'ChatItem #4' },
-]
 
 const initMessagesByChatId = {
   '1': [
@@ -42,7 +35,7 @@ const initMessagesByChatId = {
 }
 
 const MyimApplication = () => {
-  const [chats] = useState(initChats)
+  const [chats, setChats] = useState([])
   const [chat, setChat] = useState(null)
   const [messagesByChatId, setMessagesByChatId] = useState(initMessagesByChatId)
   const handleChatClick = chatId => {
@@ -72,6 +65,16 @@ const MyimApplication = () => {
   }
   const [user] = useState({ id: '1', name: 'User #1' })
   const context = { userId: user.id }
+  const handleChatsFetch = () => {
+    fetch('http://localhost:8080/api/v1/sender/chats', {
+      headers: {
+        'Accept': 'application/json'
+      }
+    }).then(response => response.json())
+      .then(data => data.values)
+      .then((chats = []) => setChats(chats.map(({ id, name }) => ({ id, name }))))
+  }
+  useEffect(handleChatsFetch, [])
   return (
     <ApplicationContext.Provider value={context}>
       <div>
