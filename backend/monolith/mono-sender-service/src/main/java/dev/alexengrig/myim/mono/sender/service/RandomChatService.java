@@ -27,6 +27,8 @@ import java.util.stream.IntStream;
 @Service
 public class RandomChatService implements ChatService {
 
+    private static final int MIN_ID = 1;
+    private static final int MAX_ID = 100;
     private static final int MIN_WORD_LENGTH = 3;
     private static final int MAX_WORD_LENGTH = 10;
     private static final char FIRST_LETTER = 'a';
@@ -39,7 +41,7 @@ public class RandomChatService implements ChatService {
         List<Chat> values = IntStream.rangeClosed(1, params.getSize())
                 .mapToObj(i -> "Chat #" + i)
                 .map(name -> Chat.builder()
-                        .id(String.valueOf(random.nextInt()))
+                        .id(randomId())
                         .name(name)
                         .build())
                 .collect(Collectors.toList());
@@ -58,12 +60,25 @@ public class RandomChatService implements ChatService {
                 .map(text -> ChatMessage.builder()
                         .chatId(chatId)
                         .text(text)
+                        .author(randomAuthor())
                         .build())
                 .collect(Collectors.toList());
         return ChatMessageSearchResult.builder()
                 .params(params)
                 .values(values)
                 .total(params.getSize())
+                .build();
+    }
+
+    private String randomId() {
+        return String.valueOf(random.nextInt(MIN_ID, MAX_ID));
+    }
+
+    private Author randomAuthor() {
+        String authorId = randomId();
+        return Author.builder()
+                .id(authorId)
+                .name("Author #" + authorId)
                 .build();
     }
 

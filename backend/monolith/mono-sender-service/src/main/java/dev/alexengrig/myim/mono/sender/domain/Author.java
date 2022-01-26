@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.sender.payload;
+package dev.alexengrig.myim.mono.sender.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@SuperBuilder
-@ToString(callSuper = true)
-public class ChatMessageResponse extends MessageResponse {
+@Builder
+@ToString
+public class Author {
 
-    private String chatId;
-    private String authorId;
-    private String authorName;
+    private String id;
+    private String name;
 
 }
