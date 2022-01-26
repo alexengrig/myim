@@ -14,10 +14,15 @@
  * limitations under the License.
  */
 
+import { useContext } from 'react'
 import PropTypes from 'prop-types'
+import { ApplicationContext } from '../contexts'
 
 const Author = ({ value: { id, name } }) => {
-  return <span>{name}</span>
+  const { userId } = useContext(ApplicationContext)
+  return userId === id ?
+    <strong>{name}</strong> :
+    <span>{name}</span>
 }
 
 const ChatMessageItem = ({ id, text, author }) => {
