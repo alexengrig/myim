@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController("chatSenderController")
 @RequestMapping("/api/v1/sender/chats")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class ChatController {
 
     private static final String DEFAULT_CHATS_SIZE = "10";
