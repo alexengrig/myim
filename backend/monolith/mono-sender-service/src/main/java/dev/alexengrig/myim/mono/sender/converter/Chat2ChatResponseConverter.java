@@ -14,17 +14,23 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.sender.service;
+package dev.alexengrig.myim.mono.sender.converter;
 
-import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchParams;
-import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchResult;
-import dev.alexengrig.myim.mono.sender.domain.ChatSearchParams;
-import dev.alexengrig.myim.mono.sender.domain.ChatSearchResult;
+import dev.alexengrig.myim.mono.sender.domain.Chat;
+import dev.alexengrig.myim.mono.sender.payload.ChatResponse;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
-public interface ChatService {
+@Component
+public class Chat2ChatResponseConverter
+        implements Converter<Chat, ChatResponse> {
 
-    ChatSearchResult searchChats(ChatSearchParams params);
-
-    ChatMessageSearchResult searchMessages(ChatMessageSearchParams params);
+    @Override
+    public ChatResponse convert(Chat source) {
+        return ChatResponse.builder()
+                .id(source.getId())
+                .name(source.getName())
+                .build();
+    }
 
 }

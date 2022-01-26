@@ -18,29 +18,47 @@ package dev.alexengrig.myim.mono.sender.controller;
 
 import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchParams;
 import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchResult;
+import dev.alexengrig.myim.mono.sender.domain.ChatSearchParams;
+import dev.alexengrig.myim.mono.sender.domain.ChatSearchResult;
 import dev.alexengrig.myim.mono.sender.payload.ChatMessageSearchResponse;
+import dev.alexengrig.myim.mono.sender.payload.ChatSearchResponse;
 import dev.alexengrig.myim.mono.sender.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController("chatSenderController")
 @RequestMapping("/api/v1/sender/chats")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class ChatController {
+
+    private static final String DEFAULT_CHATS_SIZE = "10";
+    private static final String DEFAULT_CHATS_OFFSET = "0";
 
     private static final String DEFAULT_MESSAGES_SIZE = "10";
     private static final String DEFAULT_MESSAGES_OFFSET = "0";
 
     private final ChatService chatService;
     private final ConversionService conversionService;
+
+    @GetMapping
+    public ResponseEntity<ChatSearchResponse> getChats(
+            @RequestParam(defaultValue = DEFAULT_CHATS_SIZE) int size,
+            @RequestParam(defaultValue = DEFAULT_CHATS_OFFSET) int offset) {
+        log.info("Chats getting request: size={}, offset={}", size, offset);
+        ChatSearchParams params = ChatSearchParams.builder()
+                .size(size)
+                .offset(offset)
+                .build();
+        ChatSearchResult result = chatService.searchChats(params);
+        ChatSearchResponse response = conversionService.convert(result, ChatSearchResponse.class);
+        log.info("Chats getting response: {}", response);
+        return ResponseEntity.ok(response);
+    }
 
     @GetMapping("/{chatId}/messages")
     public ResponseEntity<ChatMessageSearchResponse> getMessages(

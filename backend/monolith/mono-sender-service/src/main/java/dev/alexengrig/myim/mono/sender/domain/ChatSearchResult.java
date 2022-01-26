@@ -14,17 +14,10 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.sender.service;
+package dev.alexengrig.myim.mono.sender.domain;
 
-import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchParams;
-import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchResult;
-import dev.alexengrig.myim.mono.sender.domain.ChatSearchParams;
-import dev.alexengrig.myim.mono.sender.domain.ChatSearchResult;
+import lombok.experimental.SuperBuilder;
 
-public interface ChatService {
-
-    ChatSearchResult searchChats(ChatSearchParams params);
-
-    ChatMessageSearchResult searchMessages(ChatMessageSearchParams params);
-
+@SuperBuilder
+public class ChatSearchResult extends SearchResult<ChatSearchParams, Chat> {
 }

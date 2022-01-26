@@ -16,9 +16,7 @@
 
 package dev.alexengrig.myim.mono.sender.service;
 
-import dev.alexengrig.myim.mono.sender.domain.ChatMessage;
-import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchParams;
-import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchResult;
+import dev.alexengrig.myim.mono.sender.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +27,8 @@ import java.util.stream.IntStream;
 @Service
 public class RandomChatService implements ChatService {
 
+    private static final int MIN_ID = 1;
+    private static final int MAX_ID = 100;
     private static final int MIN_WORD_LENGTH = 3;
     private static final int MAX_WORD_LENGTH = 10;
     private static final char FIRST_LETTER = 'a';
@@ -37,19 +37,48 @@ public class RandomChatService implements ChatService {
     private final Random random = new Random();
 
     @Override
+    public ChatSearchResult searchChats(ChatSearchParams params) {
+        List<Chat> values = IntStream.rangeClosed(1, params.getSize())
+                .mapToObj(i -> "Chat #" + i)
+                .map(name -> Chat.builder()
+                        .id(randomId())
+                        .name(name)
+                        .build())
+                .collect(Collectors.toList());
+        return ChatSearchResult.builder()
+                .params(params)
+                .values(values)
+                .total(params.getSize())
+                .build();
+    }
+
+    @Override
     public ChatMessageSearchResult searchMessages(ChatMessageSearchParams params) {
         String chatId = params.getChatId();
-        List<ChatMessage> values = IntStream.rangeClosed(0, params.getSize())
+        List<ChatMessage> values = IntStream.rangeClosed(1, params.getSize())
                 .mapToObj(this::randomText)
                 .map(text -> ChatMessage.builder()
                         .chatId(chatId)
                         .text(text)
+                        .author(randomAuthor())
                         .build())
                 .collect(Collectors.toList());
         return ChatMessageSearchResult.builder()
                 .params(params)
                 .values(values)
                 .total(params.getSize())
+                .build();
+    }
+
+    private String randomId() {
+        return String.valueOf(random.nextInt(MIN_ID, MAX_ID));
+    }
+
+    private Author randomAuthor() {
+        String authorId = randomId();
+        return Author.builder()
+                .id(authorId)
+                .name("Author #" + authorId)
                 .build();
     }
 

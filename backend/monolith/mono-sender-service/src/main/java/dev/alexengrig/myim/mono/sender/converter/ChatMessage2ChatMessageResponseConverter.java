@@ -30,6 +30,8 @@ public class ChatMessage2ChatMessageResponseConverter
         return ChatMessageResponse.builder()
                 .text(source.getText())
                 .chatId(source.getChatId())
+                .authorId(source.getAuthor().getId())
+                .authorName(source.getAuthor().getName())
                 .build();
     }
 

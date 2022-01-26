@@ -28,5 +28,7 @@ import lombok.experimental.SuperBuilder;
 public class ChatMessageResponse extends MessageResponse {
 
     private String chatId;
+    private String authorId;
+    private String authorName;
 
 }
