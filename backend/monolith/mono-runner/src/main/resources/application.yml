@@ -4,3 +4,14 @@ server:
 application:
   title: myim
   version: @project.version@
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:myimdb
+    driverClassName: org.h2.Driver
+    username: user
+    password: pass
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
