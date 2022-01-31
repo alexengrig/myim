@@ -1,6 +1,7 @@
 .idea/
 .mvn/
 target/
+build/
 node_modules/
 **.iml
 mvnw
