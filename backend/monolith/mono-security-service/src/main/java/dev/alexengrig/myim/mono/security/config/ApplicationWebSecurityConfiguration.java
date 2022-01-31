@@ -48,12 +48,15 @@ public class ApplicationWebSecurityConfiguration extends WebSecurityConfigurerAd
                     .permitAll()
                     .defaultSuccessUrl("/", true)
                 .and()
+                .rememberMe()
+                    .key("remember-me-secret-key")
+                .and()
                 .logout()
                     .logoutUrl("/logout")
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
                     .clearAuthentication(true)
                     .invalidateHttpSession(true)
-                    .deleteCookies("JSESSIONID", "XSRF-TOKEN")
+                    .deleteCookies("JSESSIONID", "XSRF-TOKEN", "remember-me")
                     .logoutSuccessUrl("/login");
         // @formatter:on
     }
