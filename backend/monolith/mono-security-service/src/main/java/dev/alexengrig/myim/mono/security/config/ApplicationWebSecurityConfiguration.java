@@ -39,7 +39,10 @@ public class ApplicationWebSecurityConfiguration extends WebSecurityConfigurerAd
                 .authorizeRequests()
                     .anyRequest().authenticated()
                 .and()
-                .httpBasic();
+                .formLogin()
+                    .loginPage("/login")
+                    .permitAll()
+                    .defaultSuccessUrl("/", true);
         // @formatter:on
     }
 
