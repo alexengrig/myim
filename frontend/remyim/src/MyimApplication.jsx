@@ -15,7 +15,7 @@
  */
 
 import { useEffect, useState } from 'react'
-import { Chat, ChatList, NoChat, NoChatList } from './components'
+import { Chat, ChatList, Logout, NoChat, NoChatList } from './components'
 import { ApplicationContext } from './contexts'
 
 const initMessagesByChatId = {
@@ -110,6 +110,7 @@ const MyimApplication = () => {
           /> :
           <NoChat/>}
       </div>
+      <Logout/>
     </ApplicationContext.Provider>
   )
 }
