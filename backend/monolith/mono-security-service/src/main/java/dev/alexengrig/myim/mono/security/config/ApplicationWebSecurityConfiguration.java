@@ -36,6 +36,7 @@ public class ApplicationWebSecurityConfiguration extends WebSecurityConfigurerAd
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and()
                 .authorizeRequests()
+                    .antMatchers("/registration").permitAll()
                     .anyRequest().authenticated()
                 .and()
                 .formLogin()
