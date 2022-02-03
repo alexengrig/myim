@@ -16,6 +16,7 @@
 
 package dev.alexengrig.myim.mono.security.controller;
 
+import dev.alexengrig.myim.mono.security.exception.UserAlreadyExistsException;
 import dev.alexengrig.myim.mono.security.payload.UserRegistrationRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,10 +46,15 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public String register(@ModelAttribute("user") UserRegistrationRequest request) {
+    public String register(@ModelAttribute("user") UserRegistrationRequest request, Model model) {
         log.info("Register: {}", request);
         UserDetails user = conversionService.convert(request, UserDetails.class);
-        userDetailsManager.createUser(user);
+        try {
+            userDetailsManager.createUser(user);
+        } catch (UserAlreadyExistsException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "registration";
+        }
         return "redirect:/login";
     }
 

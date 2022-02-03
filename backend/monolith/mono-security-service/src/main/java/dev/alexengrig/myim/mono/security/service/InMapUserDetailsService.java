@@ -18,6 +18,7 @@ package dev.alexengrig.myim.mono.security.service;
 
 import dev.alexengrig.myim.mono.security.domain.ApplicationUserDetails;
 import dev.alexengrig.myim.mono.security.domain.ApplicationUserRole;
+import dev.alexengrig.myim.mono.security.exception.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -87,7 +88,7 @@ public class InMapUserDetailsService implements UserDetailsManager {
     @Override
     public void createUser(UserDetails user) {
         if (userExists(user.getUsername())) {
-            throw new IllegalArgumentException("User exists: " + user.getUsername());
+            throw new UserAlreadyExistsException(user.getUsername());
         }
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         userByUsername.put(user.getUsername(), ((ApplicationUserDetails) user).withPassword(encodedPassword));
