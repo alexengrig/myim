@@ -35,6 +35,8 @@
         <label for="username">Username</label>
         <input th:field="*{username}"
                type="text" id="username" placeholder="Username" required autofocus/>
+        <i th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
+           class="red"></i>
     </p>
     <p>
         <label for="password">Password</label>

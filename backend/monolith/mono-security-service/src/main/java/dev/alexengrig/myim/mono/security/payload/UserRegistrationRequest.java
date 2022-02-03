@@ -23,6 +23,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotBlank;
+
 @Getter
 @Setter
 @Builder
@@ -31,6 +33,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class UserRegistrationRequest {
 
+    @NotBlank(message = "Username must not be blank!")
     private String username;
     private String password;
     private String confirmPassword;
