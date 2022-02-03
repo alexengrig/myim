@@ -17,19 +17,39 @@
 package dev.alexengrig.myim.mono.security.controller;
 
 import dev.alexengrig.myim.mono.security.payload.UserRegistrationRequest;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+@Slf4j
 @Controller
 @RequestMapping("/registration")
+@RequiredArgsConstructor
 public class RegistrationController {
+
+    private final UserDetailsManager userDetailsManager;
+    private final ConversionService conversionService;
 
     @GetMapping
     public String page(Model model) {
         model.addAttribute("user", new UserRegistrationRequest());
         return "registration";
+    }
+
+    @PostMapping
+    public String register(@ModelAttribute("user") UserRegistrationRequest request) {
+        log.info("Register: {}", request);
+        UserDetails user = conversionService.convert(request, UserDetails.class);
+        userDetailsManager.createUser(user);
+        return "redirect:/login";
     }
 
 }
