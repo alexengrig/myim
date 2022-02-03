@@ -20,10 +20,12 @@ import dev.alexengrig.myim.mono.security.domain.ApplicationUserDetails;
 import dev.alexengrig.myim.mono.security.domain.ApplicationUserRole;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -35,7 +37,7 @@ import java.util.stream.Stream;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class InMapUserDetailsService implements UserDetailsService {
+public class InMapUserDetailsService implements UserDetailsManager {
 
     private final PasswordEncoder passwordEncoder;
 
@@ -80,6 +82,46 @@ public class InMapUserDetailsService implements UserDetailsService {
         }
         log.info("Loaded user: {}", user);
         return user;
+    }
+
+    @Override
+    public void createUser(UserDetails user) {
+        if (userExists(user.getUsername())) {
+            throw new IllegalArgumentException("User exists: " + user.getUsername());
+        }
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        userByUsername.put(user.getUsername(), ((ApplicationUserDetails) user).withPassword(encodedPassword));
+    }
+
+    @Override
+    public void updateUser(UserDetails user) {
+        String username = user.getUsername();
+        if (userByUsername.containsKey(username)) {
+            userByUsername.put(username, (ApplicationUserDetails) user);
+        } else {
+            throw new UsernameNotFoundException(username);
+        }
+    }
+
+    @Override
+    public void deleteUser(String username) {
+        ApplicationUserDetails removedUser = userByUsername.remove(username);
+        if (removedUser == null) {
+            throw new UsernameNotFoundException(username);
+        }
+    }
+
+    @Override
+    public void changePassword(String oldPassword, String newPassword) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        ApplicationUserDetails user = (ApplicationUserDetails) auth.getPrincipal();
+        String newEncodedPassword = passwordEncoder.encode(newPassword);
+        userByUsername.put(user.getUsername(), user.withPassword(newEncodedPassword));
+    }
+
+    @Override
+    public boolean userExists(String username) {
+        return userByUsername.containsKey(username);
     }
 
 }
