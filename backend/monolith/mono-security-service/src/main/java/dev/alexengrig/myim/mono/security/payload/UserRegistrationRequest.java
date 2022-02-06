@@ -16,6 +16,7 @@
 
 package dev.alexengrig.myim.mono.security.payload;
 
+import dev.alexengrig.myim.mono.security.validation.MatchingFieldsValues;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,6 +32,10 @@ import javax.validation.constraints.NotBlank;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@MatchingFieldsValues(
+        field = "password",
+        matchField = "confirmPassword",
+        message = "Confirm password doesn't match!")
 public class UserRegistrationRequest {
 
     @NotBlank(message = "Username must not be blank!")

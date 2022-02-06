@@ -49,6 +49,8 @@
         <label for="confirm-password">Confirm Password</label>
         <input th:field="*{confirmPassword}"
                type="password" id="confirm-password" placeholder="Confirm Password" required/>
+        <i th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"
+           class="red"></i>
     </p>
     <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}"
            type="hidden"/>
