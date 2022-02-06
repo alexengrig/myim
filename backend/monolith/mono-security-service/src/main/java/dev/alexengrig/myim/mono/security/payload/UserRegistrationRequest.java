@@ -35,6 +35,7 @@ public class UserRegistrationRequest {
 
     @NotBlank(message = "Username must not be blank!")
     private String username;
+    @NotBlank(message = "Password must not be blank!")
     private String password;
     private String confirmPassword;
 

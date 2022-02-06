@@ -42,6 +42,8 @@
         <label for="password">Password</label>
         <input th:field="*{password}"
                type="password" id="password" placeholder="Password" required/>
+        <i th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+           class="red"></i>
     </p>
     <p>
         <label for="confirm-password">Confirm Password</label>
