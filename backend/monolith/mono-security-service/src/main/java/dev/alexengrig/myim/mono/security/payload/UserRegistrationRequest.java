@@ -18,6 +18,7 @@ package dev.alexengrig.myim.mono.security.payload;
 
 import dev.alexengrig.myim.mono.security.validation.MatchingFieldsValues;
 import dev.alexengrig.myim.mono.security.validation.password.VerifiedPassword;
+import dev.alexengrig.myim.mono.security.validation.username.VerifiedUsername;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,6 +40,7 @@ import javax.validation.constraints.NotBlank;
         message = "Confirm password doesn't match!")
 public class UserRegistrationRequest {
 
+    @VerifiedUsername
     @NotBlank(message = "Username must not be blank!")
     private String username;
 
