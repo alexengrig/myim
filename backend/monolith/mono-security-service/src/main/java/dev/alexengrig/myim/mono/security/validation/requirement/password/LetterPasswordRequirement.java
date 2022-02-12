@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.security.validation.password;
+package dev.alexengrig.myim.mono.security.validation.requirement.password;
 
+import dev.alexengrig.myim.mono.security.validation.requirement.LetterRequirement;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Order(1)
 @Component
-public class LetterPasswordRequirement implements PasswordRequirement {
+public final class LetterPasswordRequirement
+        extends LetterRequirement<CharSequence, PasswordRequirementException>
+        implements PasswordRequirement {
 
     @Override
-    public void satisfy(CharSequence password) throws PasswordRequirementException {
-        boolean hasLetter = password.codePoints().anyMatch(Character::isLetter);
-        if (!hasLetter) {
-            throw new PasswordRequirementException("Password must contain at least one letter");
-        }
+    protected PasswordRequirementException createException(CharSequence value) {
+        return new PasswordRequirementException("Password must contain at least one letter");
     }
 
 }

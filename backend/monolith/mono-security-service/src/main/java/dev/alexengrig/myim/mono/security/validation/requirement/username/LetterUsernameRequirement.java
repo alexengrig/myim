@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.security.validation.username;
+package dev.alexengrig.myim.mono.security.validation.requirement.username;
 
+import dev.alexengrig.myim.mono.security.validation.requirement.LetterRequirement;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Order(1)
 @Component
-public class LetterUsernameRequirement implements UsernameRequirement {
+public final class LetterUsernameRequirement
+        extends LetterRequirement<CharSequence, UsernameRequirementException>
+        implements UsernameRequirement {
 
     @Override
-    public void satisfy(CharSequence password) throws UsernameRequirementException {
-        boolean hasLetter = password.codePoints().anyMatch(Character::isLetter);
-        if (!hasLetter) {
-            throw new UsernameRequirementException("Username must contain at least one letter");
-        }
+    protected UsernameRequirementException createException(CharSequence ignore) {
+        return new UsernameRequirementException("Username must contain at least one letter");
     }
 
 }
