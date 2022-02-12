@@ -14,25 +14,15 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.sender.converter;
+package dev.alexengrig.myim.mono.sender.mapper;
 
 import dev.alexengrig.myim.mono.sender.domain.ChatMessage;
 import dev.alexengrig.myim.mono.sender.payload.ChatMessageResponse;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
 
-@Component
-public class ChatMessage2ChatMessageResponseConverter
-        implements Converter<ChatMessage, ChatMessageResponse> {
+@Mapper(componentModel = "spring")
+public interface ChatMessageMapper {
 
-    @Override
-    public ChatMessageResponse convert(ChatMessage source) {
-        return ChatMessageResponse.builder()
-                .text(source.getText())
-                .chatId(source.getChatId())
-                .authorId(source.getAuthor().getId())
-                .authorName(source.getAuthor().getName())
-                .build();
-    }
+    ChatMessageResponse domainToResponse(ChatMessage domain);
 
 }
