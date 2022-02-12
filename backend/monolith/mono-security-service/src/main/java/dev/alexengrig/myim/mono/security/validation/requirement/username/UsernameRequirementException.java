@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.security.validation.password;
+package dev.alexengrig.myim.mono.security.validation.requirement.username;
 
-public interface PasswordRequirement {
+import dev.alexengrig.myim.mono.security.validation.requirement.ValidationRequirementException;
 
-    void satisfy(CharSequence password) throws PasswordRequirementException;
+public class UsernameRequirementException extends ValidationRequirementException {
+
+    public UsernameRequirementException(String message) {
+        super(message);
+    }
 
 }

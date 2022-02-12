@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.security.validation.password;
+package dev.alexengrig.myim.mono.security.validation.requirement.password;
 
-public class PasswordRequirementException extends Exception {
+import dev.alexengrig.myim.mono.security.validation.requirement.ValidationRequirementException;
+
+public class PasswordRequirementException extends ValidationRequirementException {
 
     public PasswordRequirementException(String message) {
         super(message);
-    }
-
-    public String getText() {
-        return getMessage();
     }
 
 }
