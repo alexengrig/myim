@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.security.validation.username;
+package dev.alexengrig.myim.mono.security.validation.requirement.username;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.provisioning.UserDetailsManager;
