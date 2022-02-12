@@ -17,6 +17,7 @@
 package dev.alexengrig.myim.mono.security.payload;
 
 import dev.alexengrig.myim.mono.security.validation.MatchingFieldsValues;
+import dev.alexengrig.myim.mono.security.validation.password.VerifiedPassword;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,6 +41,8 @@ public class UserRegistrationRequest {
 
     @NotBlank(message = "Username must not be blank!")
     private String username;
+
+    @VerifiedPassword
     @NotBlank(message = "Password must not be blank!")
     private String password;
     private String confirmPassword;
