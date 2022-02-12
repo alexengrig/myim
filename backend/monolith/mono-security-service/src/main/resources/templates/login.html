@@ -20,6 +20,11 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>myim | Login</title>
+    <style>
+        .red {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <h1>myim | Login</h1>
@@ -38,7 +43,12 @@
         <input type="checkbox" id="remember-me" name="remember-me"/>
     </p>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-    <button type="submit">Sign in</button>
+    <button type="submit">Log in</button>
+    <p class="red"
+       th:if="${param.invalid}">Invalid credentials!</p>
+    <p>
+        <a href="/registration">Registration</a>
+    </p>
 </form>
 </body>
 </html>

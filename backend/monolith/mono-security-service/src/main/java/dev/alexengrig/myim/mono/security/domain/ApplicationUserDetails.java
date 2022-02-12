@@ -22,6 +22,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Singular;
 import lombok.ToString;
+import lombok.With;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -34,6 +35,7 @@ public class ApplicationUserDetails implements UserDetails {
 
     @NonNull
     private final String username;
+    @With
     @NonNull
     @ToString.Exclude
     private final String password;
