@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.security.validation.password;
+package dev.alexengrig.myim.mono.security.validation;
 
 
 import javax.validation.Constraint;

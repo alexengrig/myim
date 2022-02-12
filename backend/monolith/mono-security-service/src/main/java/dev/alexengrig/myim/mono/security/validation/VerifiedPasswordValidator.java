@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.security.validation.username;
+package dev.alexengrig.myim.mono.security.validation;
 
+import dev.alexengrig.myim.mono.security.validation.requirement.password.PasswordRequirement;
+import dev.alexengrig.myim.mono.security.validation.requirement.password.PasswordRequirementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -25,19 +27,19 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class VerifiedUsernameValidator
-        implements ConstraintValidator<VerifiedUsername, CharSequence> {
+public class VerifiedPasswordValidator
+        implements ConstraintValidator<VerifiedPassword, CharSequence> {
 
-    private final List<UsernameRequirement> requirements;
+    private final List<PasswordRequirement> requirements;
 
     @Override
     public boolean isValid(CharSequence value, ConstraintValidatorContext context) {
         boolean isValid = true;
         context.disableDefaultConstraintViolation();
-        for (UsernameRequirement requirement : requirements) {
+        for (PasswordRequirement requirement : requirements) {
             try {
                 requirement.satisfy(value);
-            } catch (UsernameRequirementException e) {
+            } catch (PasswordRequirementException e) {
                 addConstraintViolation(context, e);
                 isValid = false;
             }
@@ -45,10 +47,10 @@ public class VerifiedUsernameValidator
         return isValid;
     }
 
-    private void addConstraintViolation(ConstraintValidatorContext context, UsernameRequirementException e) {
+    private void addConstraintViolation(ConstraintValidatorContext context, PasswordRequirementException e) {
         String text = e.getText();
         String template = context.getDefaultConstraintMessageTemplate();
-        String message = template.replace(VerifiedUsername.TEXT_PLACEHOLDER, text);
+        String message = template.replace(VerifiedPassword.TEXT_PLACEHOLDER, text);
         context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
     }
 

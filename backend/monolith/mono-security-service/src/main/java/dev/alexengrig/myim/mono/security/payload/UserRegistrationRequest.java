@@ -17,8 +17,8 @@
 package dev.alexengrig.myim.mono.security.payload;
 
 import dev.alexengrig.myim.mono.security.validation.MatchingFieldsValues;
-import dev.alexengrig.myim.mono.security.validation.password.VerifiedPassword;
-import dev.alexengrig.myim.mono.security.validation.username.VerifiedUsername;
+import dev.alexengrig.myim.mono.security.validation.VerifiedPassword;
+import dev.alexengrig.myim.mono.security.validation.VerifiedUsername;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
