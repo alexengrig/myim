@@ -43,6 +43,7 @@ public class ApplicationWebSecurityConfiguration extends WebSecurityConfigurerAd
                     .loginPage("/login")
                     .permitAll()
                     .defaultSuccessUrl("/", true)
+                    .failureUrl("/login?invalid")
                 .and()
                 .rememberMe()
                     .key("remember-me-secret-key")
