@@ -14,21 +14,26 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.security.validation.password;
+package dev.alexengrig.myim.mono.security.validation.requirement.password;
 
+import dev.alexengrig.myim.mono.security.validation.requirement.AnyCodePointRequirement;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-@Order(3)
+@Order(5)
 @Component
-public class UppercaseLetterPasswordRequirement implements PasswordRequirement {
+public final class SpecialCharPasswordRequirement
+        extends AnyCodePointRequirement<CharSequence, PasswordRequirementException>
+        implements PasswordRequirement {
 
     @Override
-    public void satisfy(CharSequence password) throws PasswordRequirementException {
-        boolean hasUppercaseLetter = password.codePoints().anyMatch(Character::isUpperCase);
-        if (!hasUppercaseLetter) {
-            throw new PasswordRequirementException("Password must contain at least one uppercase letter");
-        }
+    protected boolean match(int codePoint) {
+        return !Character.isLetterOrDigit(codePoint);
+    }
+
+    @Override
+    protected PasswordRequirementException createException(CharSequence value) {
+        return new PasswordRequirementException("Password must contain at least one special character");
     }
 
 }

@@ -14,21 +14,26 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.security.validation.password;
+package dev.alexengrig.myim.mono.security.validation.requirement.password;
 
+import dev.alexengrig.myim.mono.security.validation.requirement.AnyCodePointRequirement;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Order(4)
 @Component
-public class LowercaseLetterPasswordRequirement implements PasswordRequirement {
+public final class LowercaseLetterPasswordRequirement
+        extends AnyCodePointRequirement<CharSequence, PasswordRequirementException>
+        implements PasswordRequirement {
 
     @Override
-    public void satisfy(CharSequence password) throws PasswordRequirementException {
-        boolean hasLowercaseLetter = password.codePoints().anyMatch(Character::isLowerCase);
-        if (!hasLowercaseLetter) {
-            throw new PasswordRequirementException("Password must contain at least one lowercase letter");
-        }
+    protected boolean match(int codePoint) {
+        return Character.isLowerCase(codePoint);
+    }
+
+    @Override
+    protected PasswordRequirementException createException(CharSequence ignore) {
+        return new PasswordRequirementException("Password must contain at least one lowercase letter");
     }
 
 }

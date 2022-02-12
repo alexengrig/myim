@@ -14,21 +14,26 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.security.validation.password;
+package dev.alexengrig.myim.mono.security.validation.requirement.password;
 
+import dev.alexengrig.myim.mono.security.validation.requirement.AnyCodePointRequirement;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-@Order(2)
+@Order(3)
 @Component
-public class DigitPasswordRequirement implements PasswordRequirement {
+public final class UppercaseLetterPasswordRequirement
+        extends AnyCodePointRequirement<CharSequence, PasswordRequirementException>
+        implements PasswordRequirement {
 
     @Override
-    public void satisfy(CharSequence password) throws PasswordRequirementException {
-        boolean hasDigit = password.codePoints().anyMatch(Character::isDigit);
-        if (!hasDigit) {
-            throw new PasswordRequirementException("Password must contain at least one digit");
-        }
+    protected boolean match(int codePoint) {
+        return Character.isUpperCase(codePoint);
+    }
+
+    @Override
+    protected PasswordRequirementException createException(CharSequence value) {
+        return new PasswordRequirementException("Password must contain at least one uppercase letter");
     }
 
 }
