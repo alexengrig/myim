@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.security.validation.username;
+package dev.alexengrig.myim.mono.security.validation.requirement;
 
-public interface UsernameRequirement {
+public class ValidationRequirementException extends Exception {
 
-    void satisfy(CharSequence username) throws UsernameRequirementException;
+    public ValidationRequirementException(String message) {
+        super(message);
+    }
+
+    public String getText() {
+        return getMessage();
+    }
 
 }
