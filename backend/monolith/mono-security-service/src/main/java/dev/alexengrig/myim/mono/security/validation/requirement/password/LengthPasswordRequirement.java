@@ -14,22 +14,25 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.security.validation.password;
+package dev.alexengrig.myim.mono.security.validation.requirement.password;
 
-import org.springframework.core.annotation.Order;
+import dev.alexengrig.myim.mono.security.validation.requirement.LengthRequirement;
 import org.springframework.stereotype.Component;
 
-@Order(0)
 @Component
-public class LengthPasswordRequirement implements PasswordRequirement {
+public final class LengthPasswordRequirement
+        extends LengthRequirement<CharSequence, PasswordRequirementException>
+        implements PasswordRequirement {
 
     private static final int MIN_LENGTH = 8;
 
+    public LengthPasswordRequirement() {
+        super(MIN_LENGTH);
+    }
+
     @Override
-    public void satisfy(CharSequence password) throws PasswordRequirementException {
-        if (password.length() < MIN_LENGTH) {
-            throw new PasswordRequirementException("Length of password must be at least " + MIN_LENGTH);
-        }
+    protected PasswordRequirementException createException(CharSequence ignore) {
+        return new PasswordRequirementException("Length of password must be at least " + minLength);
     }
 
 }

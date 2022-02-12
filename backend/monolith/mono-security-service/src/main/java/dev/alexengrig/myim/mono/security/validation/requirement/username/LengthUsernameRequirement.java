@@ -14,22 +14,25 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.security.validation.username;
+package dev.alexengrig.myim.mono.security.validation.requirement.username;
 
-import org.springframework.core.annotation.Order;
+import dev.alexengrig.myim.mono.security.validation.requirement.LengthRequirement;
 import org.springframework.stereotype.Component;
 
-@Order(0)
 @Component
-public class LengthUsernameRequirement implements UsernameRequirement {
+public final class LengthUsernameRequirement
+        extends LengthRequirement<CharSequence, UsernameRequirementException>
+        implements UsernameRequirement {
 
     private static final int MIN_LENGTH = 3;
 
+    public LengthUsernameRequirement() {
+        super(MIN_LENGTH);
+    }
+
     @Override
-    public void satisfy(CharSequence username) throws UsernameRequirementException {
-        if (username.length() < MIN_LENGTH) {
-            throw new UsernameRequirementException("Length of username must be at least " + MIN_LENGTH);
-        }
+    protected UsernameRequirementException createException(CharSequence ignore) {
+        return new UsernameRequirementException("Length of username must be at least " + minLength);
     }
 
 }
