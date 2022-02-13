@@ -20,13 +20,12 @@ import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchParams;
 import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchResult;
 import dev.alexengrig.myim.mono.sender.domain.ChatSearchParams;
 import dev.alexengrig.myim.mono.sender.domain.ChatSearchResult;
-import dev.alexengrig.myim.mono.sender.mapper.ChatMessageSearchMapper;
-import dev.alexengrig.myim.mono.sender.mapper.ChatSearchMapper;
 import dev.alexengrig.myim.mono.sender.payload.ChatMessageSearchResponse;
 import dev.alexengrig.myim.mono.sender.payload.ChatSearchResponse;
 import dev.alexengrig.myim.mono.sender.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,8 +46,7 @@ public class ChatController {
     private static final String DEFAULT_MESSAGES_OFFSET = "0";
 
     private final ChatService chatService;
-    private final ChatSearchMapper chatSearchMapper;
-    private final ChatMessageSearchMapper chatMessageSearchMapper;
+    private final ConversionService conversionService;
 
     @GetMapping
     public ResponseEntity<ChatSearchResponse> getChats(
@@ -60,7 +58,7 @@ public class ChatController {
                 .offset(offset)
                 .build();
         ChatSearchResult result = chatService.searchChats(params);
-        ChatSearchResponse response = chatSearchMapper.domainToResponse(result);
+        ChatSearchResponse response = conversionService.convert(result, ChatSearchResponse.class);
         log.info("Chats getting response: {}", response);
         return ResponseEntity.ok(response);
     }
@@ -77,7 +75,7 @@ public class ChatController {
                 .offset(offset)
                 .build();
         ChatMessageSearchResult result = chatService.searchMessages(params);
-        ChatMessageSearchResponse response = chatMessageSearchMapper.domainToResponse(result);
+        ChatMessageSearchResponse response = conversionService.convert(result, ChatMessageSearchResponse.class);
         log.info("Messages getting response: {}", response);
         return ResponseEntity.ok(response);
     }
