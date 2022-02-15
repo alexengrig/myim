@@ -16,13 +16,13 @@
 
 package dev.alexengrig.myim.mono.security.controller;
 
+import dev.alexengrig.myim.mono.security.domain.ApplicationUserDetails;
 import dev.alexengrig.myim.mono.security.exception.UserAlreadyExistsException;
 import dev.alexengrig.myim.mono.security.payload.UserRegistrationRequest;
+import dev.alexengrig.myim.mono.security.service.ApplicationUserDetailsManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,7 +39,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class RegistrationController {
 
-    private final UserDetailsManager userDetailsManager;
+    private final ApplicationUserDetailsManager userDetailsManager;
     private final ConversionService conversionService;
 
     @GetMapping
@@ -57,7 +57,7 @@ public class RegistrationController {
         if (result.hasErrors()) {
             return "registration";
         }
-        UserDetails user = conversionService.convert(request, UserDetails.class);
+        ApplicationUserDetails user = conversionService.convert(request, ApplicationUserDetails.class);
         try {
             userDetailsManager.createUser(user);
         } catch (UserAlreadyExistsException e) {
