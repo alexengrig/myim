@@ -16,6 +16,7 @@
 
 package dev.alexengrig.myim.mono.sender.payload;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -27,6 +28,7 @@ import java.util.List;
 @Setter
 @ToString
 @SuperBuilder
+@EqualsAndHashCode
 public class SearchResponse<T> {
 
     private List<T> values;
