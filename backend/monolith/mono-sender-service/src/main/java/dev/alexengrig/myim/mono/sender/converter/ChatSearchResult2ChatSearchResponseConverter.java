@@ -16,31 +16,13 @@
 
 package dev.alexengrig.myim.mono.sender.converter;
 
-import dev.alexengrig.myim.mono.sender.domain.Chat;
+import dev.alexengrig.myim.mono.sender.config.MapStructConfiguration;
 import dev.alexengrig.myim.mono.sender.domain.ChatSearchResult;
-import dev.alexengrig.myim.mono.sender.payload.ChatResponse;
 import dev.alexengrig.myim.mono.sender.payload.ChatSearchResponse;
-import lombok.RequiredArgsConstructor;
+import org.mapstruct.Mapper;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
 
-import java.util.stream.Collectors;
-
-@Component
-@RequiredArgsConstructor
-public class ChatSearchResult2ChatSearchResponseConverter
-        implements Converter<ChatSearchResult, ChatSearchResponse> {
-
-    private final Converter<Chat, ChatResponse> valueConverter;
-
-    @Override
-    public ChatSearchResponse convert(ChatSearchResult source) {
-        return ChatSearchResponse.builder()
-                .values(source.getValues().stream()
-                        .map(valueConverter::convert)
-                        .collect(Collectors.toList()))
-                .total(source.getTotal())
-                .build();
-    }
-
+@Mapper(config = MapStructConfiguration.class)
+public interface ChatSearchResult2ChatSearchResponseConverter
+        extends Converter<ChatSearchResult, ChatSearchResponse> {
 }

@@ -16,25 +16,13 @@
 
 package dev.alexengrig.myim.mono.security.converter;
 
+import dev.alexengrig.myim.mono.security.config.MapStructConfiguration;
 import dev.alexengrig.myim.mono.security.domain.ApplicationUserDetails;
 import dev.alexengrig.myim.mono.security.payload.UserRegistrationRequest;
+import org.mapstruct.Mapper;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-
-@Component
-public class UserRegistrationRequest2UserDetailsConverter
-        implements Converter<UserRegistrationRequest, UserDetails> {
-
-    @Override
-    public UserDetails convert(UserRegistrationRequest source) {
-        return ApplicationUserDetails.builder()
-                .username(source.getUsername())
-                .password(source.getPassword())
-                .authorities(Collections.emptyList())
-                .build();
-    }
-
+@Mapper(config = MapStructConfiguration.class)
+public interface UserRegistrationRequest2ApplicationUserDetailsConverter
+        extends Converter<UserRegistrationRequest, ApplicationUserDetails> {
 }

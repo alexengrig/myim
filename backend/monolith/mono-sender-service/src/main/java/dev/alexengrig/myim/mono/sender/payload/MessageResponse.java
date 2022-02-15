@@ -16,6 +16,7 @@
 
 package dev.alexengrig.myim.mono.sender.payload;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -25,6 +26,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @ToString
 @SuperBuilder
+@EqualsAndHashCode
 public class MessageResponse {
 
     private String text;

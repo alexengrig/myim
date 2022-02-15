@@ -16,22 +16,13 @@
 
 package dev.alexengrig.myim.mono.recipient.converter;
 
+import dev.alexengrig.myim.mono.recipient.config.MapStructConfiguration;
 import dev.alexengrig.myim.mono.recipient.domain.ChatMessageStatus;
 import dev.alexengrig.myim.mono.recipient.payload.ChatMessageStatusResponse;
+import org.mapstruct.Mapper;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
 
-@Component
-public class ChatMessageStatus2ChatMessageStatusResponseConverter
-        implements Converter<ChatMessageStatus, ChatMessageStatusResponse> {
-
-    @Override
-    public ChatMessageStatusResponse convert(ChatMessageStatus source) {
-        return ChatMessageStatusResponse.builder()
-                .description(source.getDescription())
-                .type(source.getType())
-                .chatId(source.getChatId())
-                .build();
-    }
-
+@Mapper(config = MapStructConfiguration.class)
+public interface ChatMessageStatus2ChatMessageStatusResponseConverter
+        extends Converter<ChatMessageStatus, ChatMessageStatusResponse> {
 }

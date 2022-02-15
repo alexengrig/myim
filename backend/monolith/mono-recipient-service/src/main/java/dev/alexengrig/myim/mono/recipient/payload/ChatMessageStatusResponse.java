@@ -16,6 +16,7 @@
 
 package dev.alexengrig.myim.mono.recipient.payload;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -25,6 +26,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @SuperBuilder
 @ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 public class ChatMessageStatusResponse extends MessageStatusResponse {
 
     public String chatId;

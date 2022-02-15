@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.sender.converter;
+package dev.alexengrig.myim.mono.security.config;
 
-import dev.alexengrig.myim.mono.sender.config.MapStructConfiguration;
-import dev.alexengrig.myim.mono.sender.domain.Chat;
-import dev.alexengrig.myim.mono.sender.payload.ChatResponse;
-import org.mapstruct.Mapper;
-import org.springframework.core.convert.converter.Converter;
+import org.mapstruct.MapperConfig;
+import org.mapstruct.extensions.spring.SpringMapperConfig;
 
-@Mapper(config = MapStructConfiguration.class)
-public interface Chat2ChatResponseConverter
-        extends Converter<Chat, ChatResponse> {
+@SpringMapperConfig(conversionServiceAdapterClassName = "SecurityConversionServiceAdapter")
+@MapperConfig(componentModel = "spring", uses = SecurityConversionServiceAdapter.class)
+public interface MapStructConfiguration {
 }
