@@ -16,9 +16,8 @@
 
 package dev.alexengrig.myim.mono.recipient.domain;
 
-import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -27,6 +26,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @ToString
 @SuperBuilder
+@EqualsAndHashCode
 public class Message {
 
     private String text;

@@ -17,9 +17,8 @@
 package dev.alexengrig.myim.mono.recipient.payload;
 
 import dev.alexengrig.myim.mono.recipient.domain.MessageStatusType;
-import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -28,6 +27,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @ToString
 @SuperBuilder
+@EqualsAndHashCode
 public class MessageStatusResponse {
 
     private String description;
