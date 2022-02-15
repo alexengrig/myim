@@ -19,5 +19,14 @@ package dev.alexengrig.myim.mono.store.repository;
 import dev.alexengrig.myim.mono.store.entity.AuthorEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface AuthorRepository extends JpaRepository<AuthorEntity, String> {
+
+    Optional<AuthorEntity> findByUsername(String username);
+
+    void deleteByUsername(String username);
+
+    boolean existsByUsername(String username);
+
 }
