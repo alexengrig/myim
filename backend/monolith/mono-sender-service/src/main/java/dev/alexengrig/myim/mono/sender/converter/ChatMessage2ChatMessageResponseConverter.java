@@ -16,23 +16,20 @@
 
 package dev.alexengrig.myim.mono.sender.converter;
 
+import dev.alexengrig.myim.mono.sender.config.MapStructConfiguration;
 import dev.alexengrig.myim.mono.sender.domain.ChatMessage;
 import dev.alexengrig.myim.mono.sender.payload.ChatMessageResponse;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
 
-@Component
-public class ChatMessage2ChatMessageResponseConverter
-        implements Converter<ChatMessage, ChatMessageResponse> {
+@Mapper(config = MapStructConfiguration.class)
+public interface ChatMessage2ChatMessageResponseConverter
+        extends Converter<ChatMessage, ChatMessageResponse> {
 
+    @Mapping(source = "author.id", target = "authorId")
+    @Mapping(source = "author.name", target = "authorName")
     @Override
-    public ChatMessageResponse convert(ChatMessage source) {
-        return ChatMessageResponse.builder()
-                .text(source.getText())
-                .chatId(source.getChatId())
-                .authorId(source.getAuthor().getId())
-                .authorName(source.getAuthor().getName())
-                .build();
-    }
+    ChatMessageResponse convert(ChatMessage source);
 
 }
