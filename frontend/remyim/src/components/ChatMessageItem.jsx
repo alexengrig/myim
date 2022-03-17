@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-import { useContext } from 'react'
 import PropTypes from 'prop-types'
-import { ApplicationContext } from '../contexts'
+import { useUserContext } from '../contexts'
 
 const Author = ({ value: { id, name } }) => {
-  const { userId } = useContext(ApplicationContext)
+  const { id: userId } = useUserContext()
   return userId === id ?
     <strong>{name}</strong> :
     <span>{name}</span>
