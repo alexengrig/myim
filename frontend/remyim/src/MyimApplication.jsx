@@ -17,6 +17,7 @@
 import { useEffect, useState } from 'react'
 import { Chat, ChatList, Logout, NoChat, NoChatList } from './components'
 import { useUserContext } from './contexts'
+import { CSRF_HEADER_NAME, getCsrfToken } from './utils/csrf'
 
 const initMessagesByChatId = {
   '1': [
@@ -37,31 +38,22 @@ const initMessagesByChatId = {
 const MyimApplication = () => {
   const [chats, setChats] = useState([])
   const [chat, setChat] = useState(null)
-  const [messagesByChatId, setMessagesByChatId] = useState(initMessagesByChatId)
-  const handleChatMessagesFetch = chatId => {
-    fetch(`http://localhost:8080/api/v1/sender/chats/${chatId}/messages`, {
+  const handleChatFetch = chatId => {
+    fetch(`http://localhost:8080/api/v1/sender/chats/${chatId}`, {
       headers: {
         'Accept': 'application/json',
+        [CSRF_HEADER_NAME]: getCsrfToken(),
       },
-    }).
-      then(response => response.json()).
-      then(data => data.values).
-      then((messages = []) => {
-        const chat = chats.find(chat => chat.id === chatId)
+    })
+      .then(response => response.json())
+      .then(({ id, name }) => {
         setChat({
-          id: chat.id,
-          name: chat.name,
-          messages: messages.map(({ id, text, authorId, authorName }) => ({
-            id: id,
-            text: text,
-            author: {
-              id: authorId,
-              name: authorName,
-            },
-          })),
+          id: id,
+          name: name,
         })
       })
   }
+  const [messagesByChatId, setMessagesByChatId] = useState(initMessagesByChatId)
   const handleSend = (chatId, text) => {
     const newMessage = {
       text,
@@ -84,11 +76,12 @@ const MyimApplication = () => {
     fetch('http://localhost:8080/api/v1/sender/chats', {
       headers: {
         'Accept': 'application/json',
+        [CSRF_HEADER_NAME]: getCsrfToken(),
       },
-    }).
-      then(response => response.json()).
-      then(data => data.values).
-      then((chats = []) => {
+    })
+      .then(response => response.json())
+      .then(data => data.values)
+      .then((chats = []) => {
         setChats(chats.map(({ id, name }) => ({ id, name })))
       })
   }
@@ -101,7 +94,7 @@ const MyimApplication = () => {
           <ChatList
             value={chats}
             selectedId={chat && chat.id}
-            onChatClick={handleChatMessagesFetch}
+            onChatClick={handleChatFetch}
           /> :
           <NoChatList/>}
         {chat ?
