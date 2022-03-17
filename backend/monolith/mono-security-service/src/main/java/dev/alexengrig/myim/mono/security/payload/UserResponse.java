@@ -14,10 +14,22 @@
  * limitations under the License.
  */
 
-import { createContext } from 'react'
+package dev.alexengrig.myim.mono.security.payload;
 
-const ApplicationContext = createContext({
-  userId: null
-})
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-export default ApplicationContext
+@Getter
+@Setter
+@Builder
+@ToString
+@EqualsAndHashCode
+public class UserResponse {
+
+    private String id;
+    private String name;
+
+}

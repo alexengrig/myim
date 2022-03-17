@@ -23,6 +23,8 @@ import org.springframework.security.provisioning.UserDetailsManager;
 
 public interface ApplicationUserDetailsManager extends UserDetailsManager {
 
+    ApplicationUserDetails getCurrentUser();
+
     @Override
     ApplicationUserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 

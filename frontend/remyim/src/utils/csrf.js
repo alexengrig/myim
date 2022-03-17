@@ -14,4 +14,9 @@
  * limitations under the License.
  */
 
-export * from './UserContext'
+import Cookies from 'js-cookie'
+
+export const CSRF_HEADER_NAME = 'X-XSRF-TOKEN'
+export const CSRF_COOKIE_NAME = 'XSRF-TOKEN'
+
+export const getCsrfToken = () => Cookies.get(CSRF_COOKIE_NAME)

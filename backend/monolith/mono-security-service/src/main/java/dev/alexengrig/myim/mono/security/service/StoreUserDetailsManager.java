@@ -39,6 +39,12 @@ public class StoreUserDetailsManager implements ApplicationUserDetailsManager {
     private final ConversionService conversionService;
 
     @Override
+    public ApplicationUserDetails getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return (ApplicationUserDetails) auth.getPrincipal();
+    }
+
+    @Override
     public ApplicationUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AuthorEntity entity = authorRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
@@ -82,11 +88,6 @@ public class StoreUserDetailsManager implements ApplicationUserDetailsManager {
     @Override
     public boolean userExists(String username) {
         return authorRepository.existsByUsername(username);
-    }
-
-    private ApplicationUserDetails getCurrentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return (ApplicationUserDetails) auth.getPrincipal();
     }
 
     private void encodePassword(AuthorEntity entity) {
