@@ -37,13 +37,23 @@ public class RandomChatService implements ChatService {
     private final Random random = new Random();
 
     @Override
+    public Chat getChatById(String id) {
+        return Chat.builder()
+                .id(id)
+                .name("Chat #" + id)
+                .build();
+    }
+
+    @Override
     public ChatSearchResult searchChats(ChatSearchParams params) {
         List<Chat> values = IntStream.rangeClosed(1, params.getSize())
-                .mapToObj(i -> "Chat #" + i)
-                .map(name -> Chat.builder()
-                        .id(randomId())
-                        .name(name)
-                        .build())
+                .mapToObj(ignore -> {
+                    String id = randomId();
+                    return Chat.builder()
+                            .id(id)
+                            .name("Chat #" + id)
+                            .build();
+                })
                 .collect(Collectors.toList());
         return ChatSearchResult.builder()
                 .params(params)

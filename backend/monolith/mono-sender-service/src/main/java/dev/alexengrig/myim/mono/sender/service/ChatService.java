@@ -16,12 +16,11 @@
 
 package dev.alexengrig.myim.mono.sender.service;
 
-import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchParams;
-import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchResult;
-import dev.alexengrig.myim.mono.sender.domain.ChatSearchParams;
-import dev.alexengrig.myim.mono.sender.domain.ChatSearchResult;
+import dev.alexengrig.myim.mono.sender.domain.*;
 
 public interface ChatService {
+
+    Chat getChatById(String id);
 
     ChatSearchResult searchChats(ChatSearchParams params);
 
