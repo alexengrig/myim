@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-import { createContext } from 'react'
+import Cookies from 'js-cookie'
 
-const ApplicationContext = createContext({
-  userId: null
-})
+export const CSRF_HEADER_NAME = 'X-XSRF-TOKEN'
+export const CSRF_COOKIE_NAME = 'XSRF-TOKEN'
 
-export default ApplicationContext
+export const getCsrfToken = () => Cookies.get(CSRF_COOKIE_NAME)
