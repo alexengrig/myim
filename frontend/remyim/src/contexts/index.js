@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-export { default as ApplicationContext } from './ApplicationContext'
+export * from './UserContext'
