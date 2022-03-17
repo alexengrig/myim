@@ -16,7 +16,7 @@
 
 import { useEffect, useState } from 'react'
 import { Chat, ChatList, Logout, NoChat, NoChatList } from './components'
-import { ApplicationContext } from './contexts'
+import { useUserContext } from './contexts'
 
 const initMessagesByChatId = {
   '1': [
@@ -31,7 +31,7 @@ const initMessagesByChatId = {
     { id: '30', text: 'Message #30', author: { id: '3', name: 'User #3' } },
     { id: '31', text: 'Message #31', author: { id: '2', name: 'User #2' } },
   ],
-  '4': []
+  '4': [],
 }
 
 const MyimApplication = () => {
@@ -41,12 +41,12 @@ const MyimApplication = () => {
   const handleChatMessagesFetch = chatId => {
     fetch(`http://localhost:8080/api/v1/sender/chats/${chatId}/messages`, {
       headers: {
-        'Accept': 'application/json'
-      }
-    })
-      .then(response => response.json())
-      .then(data => data.values)
-      .then((messages = []) => {
+        'Accept': 'application/json',
+      },
+    }).
+      then(response => response.json()).
+      then(data => data.values).
+      then((messages = []) => {
         const chat = chats.find(chat => chat.id === chatId)
         setChat({
           id: chat.id,
@@ -56,9 +56,9 @@ const MyimApplication = () => {
             text: text,
             author: {
               id: authorId,
-              name: authorName
-            }
-          }))
+              name: authorName,
+            },
+          })),
         })
       })
   }
@@ -67,33 +67,34 @@ const MyimApplication = () => {
       text,
       author: {
         id: user.id,
-        name: user.name
-      }
+        name: user.name,
+      },
     }
     setChat({
       ...chat,
-      messages: [...chat.messages, newMessage]
+      messages: [...chat.messages, newMessage],
     })
     setMessagesByChatId({
       ...messagesByChatId,
-      [chatId]: [...messagesByChatId[chatId], newMessage]
+      [chatId]: [...messagesByChatId[chatId], newMessage],
     })
   }
-  const [user] = useState({ id: '1', name: 'User #1' })
-  const context = { userId: user.id }
+  const user = useUserContext()
   const handleChatsFetch = () => {
     fetch('http://localhost:8080/api/v1/sender/chats', {
       headers: {
-        'Accept': 'application/json'
-      }
-    })
-      .then(response => response.json())
-      .then(data => data.values)
-      .then((chats = []) => setChats(chats.map(({ id, name }) => ({ id, name }))))
+        'Accept': 'application/json',
+      },
+    }).
+      then(response => response.json()).
+      then(data => data.values).
+      then((chats = []) => {
+        setChats(chats.map(({ id, name }) => ({ id, name })))
+      })
   }
   useEffect(handleChatsFetch, [])
   return (
-    <ApplicationContext.Provider value={context}>
+    <>
       <div>
         <h1>myim | {user.name}</h1>
         {(chats && chats.length) ?
@@ -111,7 +112,7 @@ const MyimApplication = () => {
           <NoChat/>}
       </div>
       <Logout/>
-    </ApplicationContext.Provider>
+    </>
   )
 }
 
