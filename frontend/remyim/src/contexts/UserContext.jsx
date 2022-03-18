@@ -34,12 +34,12 @@ export const UserContextProvider = ({ children }) => {
         'Accept': 'application/json',
         [CSRF_HEADER_NAME]: getCsrfToken(),
       },
-    }).
-      then(response => response.json()).
-      then(({ id, name }) => {
+    })
+      .then(response => response.json())
+      .then(({ id, name }) => {
         setUser({ id, name })
-      }).
-      catch(error => {
+      })
+      .catch(error => {
         setError(error)
       })
   }, [])
