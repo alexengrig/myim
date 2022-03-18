@@ -19,23 +19,8 @@ import { Chat, Chats, Logout, NoChat } from './components'
 import { useUserContext } from './contexts'
 import { CSRF_HEADER_NAME, getCsrfToken } from './utils/csrf'
 
-const initMessagesByChatId = {
-  '1': [
-    { id: '10', text: 'Message #10', author: { id: '2', name: 'User #2' } },
-    { id: '11', text: 'Message #11', author: { id: '1', name: 'User #1' } },
-  ],
-  '2': [
-    { id: '20', text: 'Message #20', author: { id: '1', name: 'User #1' } },
-    { id: '21', text: 'Message #21', author: { id: '3', name: 'User #3' } },
-  ],
-  '3': [
-    { id: '30', text: 'Message #30', author: { id: '3', name: 'User #3' } },
-    { id: '31', text: 'Message #31', author: { id: '2', name: 'User #2' } },
-  ],
-  '4': [],
-}
-
 const MyimApplication = () => {
+  const user = useUserContext()
   const [chat, setChat] = useState(null)
   const handleChatFetch = chatId => {
     fetch(`http://localhost:8080/api/v1/sender/chats/${chatId}`, {
@@ -52,25 +37,22 @@ const MyimApplication = () => {
         })
       })
   }
-  const [messagesByChatId, setMessagesByChatId] = useState(initMessagesByChatId)
   const handleSend = (chatId, text) => {
-    const newMessage = {
-      text,
-      author: {
-        id: user.id,
-        name: user.name,
+    const newMessage = { text }
+    fetch(`http://localhost:8080/api/v1/recipient/chats/${chatId}/messages`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        [CSRF_HEADER_NAME]: getCsrfToken(),
       },
-    }
-    setChat({
-      ...chat,
-      messages: [...chat.messages, newMessage],
+      body: JSON.stringify(newMessage)
     })
-    setMessagesByChatId({
-      ...messagesByChatId,
-      [chatId]: [...messagesByChatId[chatId], newMessage],
-    })
+      .then(response => response.json())
+      .then(({ chatId, description, type }) => {
+        console.log(chatId, description, type)
+      })
   }
-  const user = useUserContext()
   return (
     <>
       <div>
