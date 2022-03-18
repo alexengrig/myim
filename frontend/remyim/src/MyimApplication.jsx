@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { useEffect, useState } from 'react'
-import { Chat, ChatList, Logout, NoChat, NoChatList } from './components'
+import { useState } from 'react'
+import { Chat, Chats, Logout, NoChat } from './components'
 import { useUserContext } from './contexts'
 import { CSRF_HEADER_NAME, getCsrfToken } from './utils/csrf'
 
@@ -36,7 +36,6 @@ const initMessagesByChatId = {
 }
 
 const MyimApplication = () => {
-  const [chats, setChats] = useState([])
   const [chat, setChat] = useState(null)
   const handleChatFetch = chatId => {
     fetch(`http://localhost:8080/api/v1/sender/chats/${chatId}`, {
@@ -72,31 +71,14 @@ const MyimApplication = () => {
     })
   }
   const user = useUserContext()
-  const handleChatsFetch = () => {
-    fetch('http://localhost:8080/api/v1/sender/chats', {
-      headers: {
-        'Accept': 'application/json',
-        [CSRF_HEADER_NAME]: getCsrfToken(),
-      },
-    })
-      .then(response => response.json())
-      .then(data => data.values)
-      .then((chats = []) => {
-        setChats(chats.map(({ id, name }) => ({ id, name })))
-      })
-  }
-  useEffect(handleChatsFetch, [])
   return (
     <>
       <div>
         <h1>myim | {user.name}</h1>
-        {(chats && chats.length) ?
-          <ChatList
-            value={chats}
-            selectedId={chat && chat.id}
-            onChatClick={handleChatFetch}
-          /> :
-          <NoChatList/>}
+        <Chats
+          selected={chat}
+          onClick={handleChatFetch}
+        />
         {chat ?
           <Chat
             value={chat}
