@@ -14,96 +14,53 @@
  * limitations under the License.
  */
 
-import { useEffect, useState } from 'react'
-import { Chat, ChatList, Logout, NoChat, NoChatList } from './components'
+import { useState } from 'react'
+import { Chat, Chats, Logout, NoChat } from './components'
 import { useUserContext } from './contexts'
-
-const initMessagesByChatId = {
-  '1': [
-    { id: '10', text: 'Message #10', author: { id: '2', name: 'User #2' } },
-    { id: '11', text: 'Message #11', author: { id: '1', name: 'User #1' } },
-  ],
-  '2': [
-    { id: '20', text: 'Message #20', author: { id: '1', name: 'User #1' } },
-    { id: '21', text: 'Message #21', author: { id: '3', name: 'User #3' } },
-  ],
-  '3': [
-    { id: '30', text: 'Message #30', author: { id: '3', name: 'User #3' } },
-    { id: '31', text: 'Message #31', author: { id: '2', name: 'User #2' } },
-  ],
-  '4': [],
-}
+import { CSRF_HEADER_NAME, getCsrfToken } from './utils/csrf'
 
 const MyimApplication = () => {
-  const [chats, setChats] = useState([])
+  const user = useUserContext()
   const [chat, setChat] = useState(null)
-  const [messagesByChatId, setMessagesByChatId] = useState(initMessagesByChatId)
-  const handleChatMessagesFetch = chatId => {
-    fetch(`http://localhost:8080/api/v1/sender/chats/${chatId}/messages`, {
+  const handleChatFetch = chatId => {
+    fetch(`http://localhost:8080/api/v1/sender/chats/${chatId}`, {
       headers: {
         'Accept': 'application/json',
+        [CSRF_HEADER_NAME]: getCsrfToken(),
       },
-    }).
-      then(response => response.json()).
-      then(data => data.values).
-      then((messages = []) => {
-        const chat = chats.find(chat => chat.id === chatId)
+    })
+      .then(response => response.json())
+      .then(({ id, name }) => {
         setChat({
-          id: chat.id,
-          name: chat.name,
-          messages: messages.map(({ id, text, authorId, authorName }) => ({
-            id: id,
-            text: text,
-            author: {
-              id: authorId,
-              name: authorName,
-            },
-          })),
+          id: id,
+          name: name,
         })
       })
   }
   const handleSend = (chatId, text) => {
-    const newMessage = {
-      text,
-      author: {
-        id: user.id,
-        name: user.name,
-      },
-    }
-    setChat({
-      ...chat,
-      messages: [...chat.messages, newMessage],
-    })
-    setMessagesByChatId({
-      ...messagesByChatId,
-      [chatId]: [...messagesByChatId[chatId], newMessage],
-    })
-  }
-  const user = useUserContext()
-  const handleChatsFetch = () => {
-    fetch('http://localhost:8080/api/v1/sender/chats', {
+    const newMessage = { text }
+    fetch(`http://localhost:8080/api/v1/recipient/chats/${chatId}/messages`, {
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        [CSRF_HEADER_NAME]: getCsrfToken(),
       },
-    }).
-      then(response => response.json()).
-      then(data => data.values).
-      then((chats = []) => {
-        setChats(chats.map(({ id, name }) => ({ id, name })))
+      body: JSON.stringify(newMessage)
+    })
+      .then(response => response.json())
+      .then(({ chatId, description, type }) => {
+        console.log(chatId, description, type)
       })
   }
-  useEffect(handleChatsFetch, [])
   return (
     <>
       <div>
         <h1>myim | {user.name}</h1>
-        {(chats && chats.length) ?
-          <ChatList
-            value={chats}
-            selectedId={chat && chat.id}
-            onChatClick={handleChatMessagesFetch}
-          /> :
-          <NoChatList/>}
+        <Chats
+          selected={chat}
+          onClick={handleChatFetch}
+        />
         {chat ?
           <Chat
             value={chat}

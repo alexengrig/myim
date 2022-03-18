@@ -16,11 +16,9 @@
 
 package dev.alexengrig.myim.mono.sender.controller;
 
-import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchParams;
-import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchResult;
-import dev.alexengrig.myim.mono.sender.domain.ChatSearchParams;
-import dev.alexengrig.myim.mono.sender.domain.ChatSearchResult;
+import dev.alexengrig.myim.mono.sender.domain.*;
 import dev.alexengrig.myim.mono.sender.payload.ChatMessageSearchResponse;
+import dev.alexengrig.myim.mono.sender.payload.ChatResponse;
 import dev.alexengrig.myim.mono.sender.payload.ChatSearchResponse;
 import dev.alexengrig.myim.mono.sender.service.ChatService;
 import lombok.RequiredArgsConstructor;
@@ -60,6 +58,16 @@ public class ChatController {
         ChatSearchResult result = chatService.searchChats(params);
         ChatSearchResponse response = conversionService.convert(result, ChatSearchResponse.class);
         log.info("Chats getting response: {}", response);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{chatId}")
+    public ResponseEntity<ChatResponse> getChat(
+            @PathVariable String chatId) {
+        log.info("Chat getting request: chatId={}", chatId);
+        Chat result = chatService.getChatById(chatId);
+        ChatResponse response = conversionService.convert(result, ChatResponse.class);
+        log.info("Chat getting response: {}", response);
         return ResponseEntity.ok(response);
     }
 

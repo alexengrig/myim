@@ -17,18 +17,14 @@
 import PropTypes from 'prop-types'
 import { ChatItem } from './index'
 
-const ChatList = ({
-  value: chats = [],
-  selectedId: selectedChatId,
-  onChatClick = () => {}
-}) => {
+const ChatList = ({ value: chats = [], selected: selectedId, onClick = () => {} }) => {
   return (
     <ul>
       {chats.map((chat, index) => (
         <ChatItem
           key={index}
-          selected={chat.id === selectedChatId}
-          onClick={onChatClick}
+          selected={chat.id === selectedId}
+          onClick={onClick}
           {...chat}
         />
       ))}
@@ -38,8 +34,8 @@ const ChatList = ({
 
 export const ChatListPropTypes = {
   value: PropTypes.arrayOf(PropTypes.object),
-  selectedId: PropTypes.string,
-  onChatClick: PropTypes.func
+  selected: PropTypes.string,
+  onClick: PropTypes.func
 }
 
 ChatList.propTypes = ChatListPropTypes

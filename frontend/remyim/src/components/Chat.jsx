@@ -16,21 +16,63 @@
 
 import PropTypes from 'prop-types'
 import { ChatMessageInput, ChatMessageList, NoChatMessageList } from './index'
+import { useEffect, useState } from 'react'
+import { CSRF_HEADER_NAME, getCsrfToken } from '../utils/csrf'
 
-const Chat = ({
-  value: { id, name, messages = [] },
-  onSend = () => {}
-}) => {
+const ChatBody = ({ messages, error, onSend }) => {
+  if (messages) {
+    return (
+      <>
+        {messages.length ?
+          <ChatMessageList value={messages}/> :
+          <NoChatMessageList/>}
+        <ChatMessageInput onSend={onSend}/>
+      </>
+    )
+  } else if (error) {
+    return <div>Messages loading error: {error}</div>
+  } else {
+    return <div>Messages loading...</div>
+  }
+}
+
+const Chat = ({ value: { id, name }, onSend = () => {} }) => {
+  const [messages, setMessages] = useState(null)
+  const [error, setError] = useState(null)
   const handleMessageSend = message => {
     onSend(id, message)
   }
+  useEffect(() => {
+    const handleMessagesFetch = () => {
+      fetch(`http://localhost:8080/api/v1/sender/chats/${id}/messages`, {
+        headers: {
+          'Accept': 'application/json',
+          [CSRF_HEADER_NAME]: getCsrfToken(),
+        },
+      })
+        .then(response => response.json())
+        .then(data => data.values)
+        .then((messages = []) => {
+          setMessages(messages.map(({ chatId, text, authorId, authorName }) => ({
+            text: text,
+            author: {
+              id: authorId,
+              name: authorName
+            }
+          })))
+        })
+        .catch(error => setError(error))
+    }
+    handleMessagesFetch()
+  }, [id])
   return (
     <div>
       <h3>{name}</h3>
-      {(messages && messages.length) ?
-        <ChatMessageList value={messages}/> :
-        <NoChatMessageList/>}
-      <ChatMessageInput onSend={handleMessageSend}/>
+      <ChatBody
+        messages={messages}
+        error={error}
+        onSend={handleMessageSend}
+      />
     </div>
   )
 }
@@ -39,7 +81,6 @@ export const ChatPropTypes = {
   value: PropTypes.shape({
     id: PropTypes.string,
     name: PropTypes.string,
-    messages: PropTypes.array,
   }).isRequired,
   onSend: PropTypes.func
 }
