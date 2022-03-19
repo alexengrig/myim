@@ -16,10 +16,20 @@
 
 package dev.alexengrig.myim.mono.recipient.config;
 
+import dev.alexengrig.myim.mono.domain.Chat;
+import org.mapstruct.InjectionStrategy;
 import org.mapstruct.MapperConfig;
+import org.mapstruct.extensions.spring.ExternalConversion;
 import org.mapstruct.extensions.spring.SpringMapperConfig;
 
-@SpringMapperConfig(conversionServiceAdapterClassName = "RecipientConversionServiceAdapter")
-@MapperConfig(componentModel = "spring", uses = RecipientConversionServiceAdapter.class)
+@SpringMapperConfig(
+        conversionServiceAdapterClassName = "RecipientConversionServiceAdapter",
+        externalConversions = {
+                @ExternalConversion(sourceType = String.class, targetType = Chat.class)
+        })
+@MapperConfig(
+        componentModel = "spring",
+        uses = RecipientConversionServiceAdapter.class,
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface MapStructConfiguration {
 }
