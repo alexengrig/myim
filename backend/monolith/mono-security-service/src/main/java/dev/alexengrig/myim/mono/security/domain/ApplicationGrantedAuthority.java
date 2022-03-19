@@ -16,15 +16,12 @@
 
 package dev.alexengrig.myim.mono.security.domain;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 
-@Getter
-@ToString
+@Data
 @SuperBuilder
 @RequiredArgsConstructor
 public class ApplicationGrantedAuthority implements GrantedAuthority {

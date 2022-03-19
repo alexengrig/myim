@@ -16,11 +16,15 @@
 
 package dev.alexengrig.myim.mono.security.domain;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+@Data
 @SuperBuilder
 @ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 public class ApplicationUserRole extends ApplicationGrantedAuthority {
 
     public static final String PREFIX = "ROLE_";
