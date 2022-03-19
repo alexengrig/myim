@@ -16,15 +16,14 @@
 
 package dev.alexengrig.myim.mono.recipient.service;
 
-import dev.alexengrig.myim.mono.recipient.domain.ChatMessage;
-import dev.alexengrig.myim.mono.recipient.domain.ChatMessageStatus;
-import dev.alexengrig.myim.mono.recipient.domain.MessageStatusType;
+import dev.alexengrig.myim.mono.domain.ChatMessage;
+import dev.alexengrig.myim.mono.domain.ChatMessageStatus;
+import dev.alexengrig.myim.mono.domain.MessageStatusType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -38,7 +37,7 @@ public class LogChatService implements ChatService {
         LocalDateTime sentAt = LocalDateTime.now();
         String description = "Message sent at " + dateTimeFormatter.format(sentAt);
         return ChatMessageStatus.builder()
-                .chatId(message.getChatId())
+                .message(message)
                 .description(description)
                 .type(MessageStatusType.SENT)
                 .build();
