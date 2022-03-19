@@ -16,10 +16,14 @@
 
 package dev.alexengrig.myim.mono.security.config;
 
+import org.mapstruct.InjectionStrategy;
 import org.mapstruct.MapperConfig;
 import org.mapstruct.extensions.spring.SpringMapperConfig;
 
 @SpringMapperConfig(conversionServiceAdapterClassName = "SecurityConversionServiceAdapter")
-@MapperConfig(componentModel = "spring", uses = SecurityConversionServiceAdapter.class)
+@MapperConfig(
+        componentModel = "spring",
+        uses = SecurityConversionServiceAdapter.class,
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface MapStructConfiguration {
 }
