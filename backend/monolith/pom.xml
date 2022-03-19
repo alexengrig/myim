@@ -33,6 +33,7 @@
         <module>mono-security-service</module>
         <module>mono-sender-service</module>
         <module>mono-store-service</module>
+        <module>mono-domain</module>
     </modules>
 
     <properties>
@@ -56,6 +57,11 @@
                 <version>${spring.boot.dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>dev.alexengrig.myim</groupId>
+                <artifactId>mono-domain</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>dev.alexengrig.myim</groupId>
