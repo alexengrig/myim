@@ -19,7 +19,7 @@ package dev.alexengrig.myim.mono.sender.converter;
 import dev.alexengrig.myim.mono.domain.Chat;
 import dev.alexengrig.myim.mono.domain.condition.ChatSearchResult;
 import dev.alexengrig.myim.mono.sender.payload.ChatResponse;
-import dev.alexengrig.myim.mono.sender.payload.ChatSearchResponse;
+import dev.alexengrig.myim.mono.sender.payload.condition.ChatSearchResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -48,10 +48,11 @@ class ChatMessage2ChatMessageResponseConverterTest {
                 .build();
         ChatMessageResponse actual = converter.convert(source);
         ChatMessageResponse expected = ChatMessageResponse.builder()
-                .text("test-text")
+                .id("test-id")
                 .chatId("test-chat-id")
                 .authorId("test-author-id")
                 .authorName("test-author-name")
+                .text("test-text")
                 .build();
         assertEquals(expected, actual, "ChatMessageResponse");
     }
