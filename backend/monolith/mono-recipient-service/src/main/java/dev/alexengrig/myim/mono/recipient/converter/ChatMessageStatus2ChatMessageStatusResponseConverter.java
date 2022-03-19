@@ -27,7 +27,9 @@ import org.springframework.core.convert.converter.Converter;
 public interface ChatMessageStatus2ChatMessageStatusResponseConverter
         extends Converter<ChatMessageStatus, ChatMessageStatusResponse> {
 
+    @Mapping(target = "messageId", source = "message.id")
     @Mapping(target = "chatId", source = "message.chat.id")
+    @Mapping(target = "authorId", source = "message.author.id")
     @Override
     ChatMessageStatusResponse convert(ChatMessageStatus source);
 
