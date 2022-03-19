@@ -19,10 +19,12 @@ package dev.alexengrig.myim.mono.sender.payload.condition;
 import dev.alexengrig.myim.mono.sender.payload.ChatResponse;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class ChatSearchResponse extends SearchResponse<ChatResponse> {
 }

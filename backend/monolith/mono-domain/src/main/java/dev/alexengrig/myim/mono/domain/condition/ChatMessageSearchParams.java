@@ -19,12 +19,14 @@ package dev.alexengrig.myim.mono.domain.condition;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Singular;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Set;
 
 @Data
 @SuperBuilder
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class ChatMessageSearchParams extends SearchParams {
 
