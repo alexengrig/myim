@@ -35,6 +35,10 @@
             <groupId>dev.alexengrig.myim</groupId>
             <artifactId>mono-domain</artifactId>
         </dependency>
+        <dependency>
+            <groupId>dev.alexengrig.myim</groupId>
+            <artifactId>mono-store-service</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
