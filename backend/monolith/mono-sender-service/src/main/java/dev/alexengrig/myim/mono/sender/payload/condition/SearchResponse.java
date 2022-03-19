@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.sender.payload;
+package dev.alexengrig.myim.mono.sender.payload.condition;
 
-
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
-@Getter
-@Setter
+import java.util.List;
+
+@Data
 @SuperBuilder
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
-public class ChatSearchResponse extends SearchResponse<ChatResponse> {
+public class SearchResponse<T> {
+
+    private List<T> values;
+    private long total;
+
 }
