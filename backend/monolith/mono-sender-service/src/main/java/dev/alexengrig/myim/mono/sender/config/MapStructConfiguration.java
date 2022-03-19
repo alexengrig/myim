@@ -16,10 +16,14 @@
 
 package dev.alexengrig.myim.mono.sender.config;
 
+import org.mapstruct.InjectionStrategy;
 import org.mapstruct.MapperConfig;
 import org.mapstruct.extensions.spring.SpringMapperConfig;
 
 @SpringMapperConfig(conversionServiceAdapterClassName = "SenderConversionServiceAdapter")
-@MapperConfig(componentModel = "spring", uses = SenderConversionServiceAdapter.class)
+@MapperConfig(
+        componentModel = "spring",
+        uses = SenderConversionServiceAdapter.class,
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface MapStructConfiguration {
 }
