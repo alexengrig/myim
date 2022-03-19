@@ -16,8 +16,8 @@
 
 package dev.alexengrig.myim.mono.sender.converter;
 
+import dev.alexengrig.myim.mono.domain.ChatMessage;
 import dev.alexengrig.myim.mono.sender.config.MapStructConfiguration;
-import dev.alexengrig.myim.mono.sender.domain.ChatMessage;
 import dev.alexengrig.myim.mono.sender.payload.ChatMessageResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -27,8 +27,9 @@ import org.springframework.core.convert.converter.Converter;
 public interface ChatMessage2ChatMessageResponseConverter
         extends Converter<ChatMessage, ChatMessageResponse> {
 
-    @Mapping(source = "author.id", target = "authorId")
-    @Mapping(source = "author.name", target = "authorName")
+    @Mapping(target = "chatId", source = "chat.id")
+    @Mapping(target = "authorId", source = "author.id")
+    @Mapping(target = "authorName", source = "author.name")
     @Override
     ChatMessageResponse convert(ChatMessage source);
 

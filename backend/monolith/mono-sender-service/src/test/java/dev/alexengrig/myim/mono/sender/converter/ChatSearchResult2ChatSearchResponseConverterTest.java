@@ -16,9 +16,8 @@
 
 package dev.alexengrig.myim.mono.sender.converter;
 
-import dev.alexengrig.myim.mono.sender.domain.Chat;
-import dev.alexengrig.myim.mono.sender.domain.ChatSearchParams;
-import dev.alexengrig.myim.mono.sender.domain.ChatSearchResult;
+import dev.alexengrig.myim.mono.domain.Chat;
+import dev.alexengrig.myim.mono.domain.condition.ChatSearchResult;
 import dev.alexengrig.myim.mono.sender.payload.ChatResponse;
 import dev.alexengrig.myim.mono.sender.payload.ChatSearchResponse;
 import org.junit.jupiter.api.Assertions;
@@ -37,10 +36,6 @@ class ChatSearchResult2ChatSearchResponseConverterTest {
     @Test
     void should_convert() {
         ChatSearchResult source = ChatSearchResult.builder()
-                .params(ChatSearchParams.builder()
-                        .size(10)
-                        .offset(20)
-                        .build())
                 .values(Collections.singletonList(
                         Chat.builder()
                                 .id("test-chat-id")

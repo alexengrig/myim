@@ -16,11 +16,11 @@
 
 package dev.alexengrig.myim.mono.sender.converter;
 
+import dev.alexengrig.myim.mono.domain.Author;
+import dev.alexengrig.myim.mono.domain.Chat;
+import dev.alexengrig.myim.mono.domain.ChatMessage;
+import dev.alexengrig.myim.mono.domain.condition.ChatMessageSearchResult;
 import dev.alexengrig.myim.mono.sender.config.SenderConversionServiceAdapter;
-import dev.alexengrig.myim.mono.sender.domain.Author;
-import dev.alexengrig.myim.mono.sender.domain.ChatMessage;
-import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchParams;
-import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchResult;
 import dev.alexengrig.myim.mono.sender.payload.ChatMessageResponse;
 import dev.alexengrig.myim.mono.sender.payload.ChatMessageSearchResponse;
 import lombok.SneakyThrows;
@@ -46,15 +46,13 @@ class ChatMessageSearchResult2ChatMessageSearchResponseConverterTest {
     @Test
     void should_convert() {
         ChatMessageSearchResult source = ChatMessageSearchResult.builder()
-                .params(ChatMessageSearchParams.builder()
-                        .size(10)
-                        .offset(20)
-                        .chatId("test-chat-id")
-                        .build())
                 .values(Collections.singletonList(
                         ChatMessage.builder()
                                 .text("test-text")
-                                .chatId("test-chat-id")
+                                .chat(Chat.builder()
+                                        .id("test-chat-id")
+                                        .name("test-chat-name")
+                                        .build())
                                 .author(Author.builder()
                                         .id("test-author-id")
                                         .name("test-author-name")

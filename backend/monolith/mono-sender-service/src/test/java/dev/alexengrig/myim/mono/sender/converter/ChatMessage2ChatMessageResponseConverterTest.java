@@ -16,8 +16,9 @@
 
 package dev.alexengrig.myim.mono.sender.converter;
 
-import dev.alexengrig.myim.mono.sender.domain.Author;
-import dev.alexengrig.myim.mono.sender.domain.ChatMessage;
+import dev.alexengrig.myim.mono.domain.Author;
+import dev.alexengrig.myim.mono.domain.Chat;
+import dev.alexengrig.myim.mono.domain.ChatMessage;
 import dev.alexengrig.myim.mono.sender.payload.ChatMessageResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,12 @@ class ChatMessage2ChatMessageResponseConverterTest {
     @Test
     void should_convert() {
         ChatMessage source = ChatMessage.builder()
+                .id("test-id")
                 .text("test-text")
-                .chatId("test-chat-id")
+                .chat(Chat.builder()
+                        .id("test-chat-id")
+                        .name("test-chat-name")
+                        .build())
                 .author(Author.builder()
                         .id("test-author-id")
                         .name("test-author-name")
