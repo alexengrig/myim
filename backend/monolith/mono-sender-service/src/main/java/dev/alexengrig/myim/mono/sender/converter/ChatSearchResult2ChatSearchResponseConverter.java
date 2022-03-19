@@ -18,7 +18,7 @@ package dev.alexengrig.myim.mono.sender.converter;
 
 import dev.alexengrig.myim.mono.domain.condition.ChatSearchResult;
 import dev.alexengrig.myim.mono.sender.config.MapStructConfiguration;
-import dev.alexengrig.myim.mono.sender.payload.ChatSearchResponse;
+import dev.alexengrig.myim.mono.sender.payload.condition.ChatSearchResponse;
 import org.mapstruct.Mapper;
 import org.springframework.core.convert.converter.Converter;
 
