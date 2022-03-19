@@ -16,11 +16,10 @@
 
 package dev.alexengrig.myim.mono.recipient.service;
 
-import dev.alexengrig.myim.mono.domain.ChatMessage;
 import dev.alexengrig.myim.mono.domain.ChatMessageStatus;
 
 public interface ChatService {
 
-    ChatMessageStatus sendMessage(ChatMessage message);
+    ChatMessageStatus sendMessage(String chatId, String text);
 
 }

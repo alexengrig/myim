@@ -16,6 +16,7 @@
 
 package dev.alexengrig.myim.mono.recipient.service;
 
+import dev.alexengrig.myim.mono.domain.Chat;
 import dev.alexengrig.myim.mono.domain.ChatMessage;
 import dev.alexengrig.myim.mono.domain.ChatMessageStatus;
 import dev.alexengrig.myim.mono.domain.MessageStatusType;
@@ -32,12 +33,17 @@ public class LogChatService implements ChatService {
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     @Override
-    public ChatMessageStatus sendMessage(ChatMessage message) {
-        log.info("Send message: {}", message);
+    public ChatMessageStatus sendMessage(String chatId, String text) {
+        log.info("Send message: chatId={}, text={}", chatId, text);
         LocalDateTime sentAt = LocalDateTime.now();
         String description = "Message sent at " + dateTimeFormatter.format(sentAt);
         return ChatMessageStatus.builder()
-                .message(message)
+                .message(ChatMessage.builder()
+                        .chat(Chat.builder()
+                                .id(chatId)
+                                .build())
+                        .text(text)
+                        .build())
                 .description(description)
                 .type(MessageStatusType.SENT)
                 .build();
