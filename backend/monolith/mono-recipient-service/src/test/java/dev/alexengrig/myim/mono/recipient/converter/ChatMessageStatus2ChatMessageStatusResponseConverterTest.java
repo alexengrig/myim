@@ -16,8 +16,10 @@
 
 package dev.alexengrig.myim.mono.recipient.converter;
 
-import dev.alexengrig.myim.mono.recipient.domain.ChatMessageStatus;
-import dev.alexengrig.myim.mono.recipient.domain.MessageStatusType;
+import dev.alexengrig.myim.mono.domain.Chat;
+import dev.alexengrig.myim.mono.domain.ChatMessage;
+import dev.alexengrig.myim.mono.domain.ChatMessageStatus;
+import dev.alexengrig.myim.mono.domain.MessageStatusType;
 import dev.alexengrig.myim.mono.recipient.payload.ChatMessageStatusResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +37,17 @@ class ChatMessageStatus2ChatMessageStatusResponseConverterTest {
     void should_convert() {
         ChatMessageStatus source = ChatMessageStatus.builder()
                 .description("test-description")
+                .message(ChatMessage.builder()
+                        .chat(Chat.builder()
+                                .id("test-chat-id")
+                                .build())
+                        .build())
                 .type(MessageStatusType.SENT)
-                .chatId("test-chat-id")
                 .build();
         ChatMessageStatusResponse actual = converter.convert(source);
         ChatMessageStatusResponse expected = ChatMessageStatusResponse.builder()
                 .description("test-description")
-                .type(MessageStatusType.SENT)
+                .type("SENT")
                 .chatId("test-chat-id")
                 .build();
         assertEquals(expected, actual, "ChatMessageStatusResponse");
