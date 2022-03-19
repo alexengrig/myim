@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.sender.domain;
+package dev.alexengrig.myim.mono.domain;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @Builder
-@ToString
-public class Chat {
+public class ChatMessage {
 
     private String id;
-    private String name;
+    private String text;
+    private Chat chat;
+    private Author author;
 
 }

@@ -17,16 +17,10 @@
 package dev.alexengrig.myim.mono.sender.payload;
 
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @Builder
-@ToString
-@EqualsAndHashCode
 public class ChatResponse {
 
     private String id;

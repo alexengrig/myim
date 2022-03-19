@@ -16,23 +16,20 @@
 
 package dev.alexengrig.myim.mono.sender.converter;
 
+import dev.alexengrig.myim.mono.domain.Author;
+import dev.alexengrig.myim.mono.domain.Chat;
+import dev.alexengrig.myim.mono.domain.ChatMessage;
+import dev.alexengrig.myim.mono.domain.condition.ChatMessageSearchResult;
 import dev.alexengrig.myim.mono.sender.config.SenderConversionServiceAdapter;
-import dev.alexengrig.myim.mono.sender.domain.Author;
-import dev.alexengrig.myim.mono.sender.domain.ChatMessage;
-import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchParams;
-import dev.alexengrig.myim.mono.sender.domain.ChatMessageSearchResult;
 import dev.alexengrig.myim.mono.sender.payload.ChatMessageResponse;
-import dev.alexengrig.myim.mono.sender.payload.ChatMessageSearchResponse;
-import lombok.SneakyThrows;
+import dev.alexengrig.myim.mono.sender.payload.condition.ChatMessageSearchResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.DefaultConversionService;
-import org.springframework.util.ReflectionUtils;
 
-import java.lang.reflect.Field;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,19 +43,18 @@ class ChatMessageSearchResult2ChatMessageSearchResponseConverterTest {
     @Test
     void should_convert() {
         ChatMessageSearchResult source = ChatMessageSearchResult.builder()
-                .params(ChatMessageSearchParams.builder()
-                        .size(10)
-                        .offset(20)
-                        .chatId("test-chat-id")
-                        .build())
                 .values(Collections.singletonList(
                         ChatMessage.builder()
-                                .text("test-text")
-                                .chatId("test-chat-id")
+                                .id("test-id")
+                                .chat(Chat.builder()
+                                        .id("test-chat-id")
+                                        .name("test-chat-name")
+                                        .build())
                                 .author(Author.builder()
                                         .id("test-author-id")
                                         .name("test-author-name")
                                         .build())
+                                .text("test-text")
                                 .build()))
                 .total(1000)
                 .build();
@@ -66,10 +62,11 @@ class ChatMessageSearchResult2ChatMessageSearchResponseConverterTest {
         ChatMessageSearchResponse expected = ChatMessageSearchResponse.builder()
                 .values(Collections.singletonList(
                         ChatMessageResponse.builder()
-                                .text("test-text")
+                                .id("test-id")
                                 .chatId("test-chat-id")
                                 .authorId("test-author-id")
                                 .authorName("test-author-name")
+                                .text("test-text")
                                 .build()))
                 .total(1000)
                 .build();
@@ -96,14 +93,8 @@ class ChatMessageSearchResult2ChatMessageSearchResponseConverterTest {
         }
 
         @Bean
-        @SneakyThrows(NoSuchFieldException.class)
         ChatMessageSearchResult2ChatMessageSearchResponseConverter converter(SenderConversionServiceAdapter adapter) {
-            var converter = new ChatMessageSearchResult2ChatMessageSearchResponseConverterImpl();
-            var converterType = ChatMessageSearchResult2ChatMessageSearchResponseConverterImpl.class;
-            Field field = converterType.getDeclaredField("senderConversionServiceAdapter");
-            ReflectionUtils.makeAccessible(field);
-            ReflectionUtils.setField(field, converter, adapter);
-            return converter;
+            return new ChatMessageSearchResult2ChatMessageSearchResponseConverterImpl(adapter);
         }
 
     }

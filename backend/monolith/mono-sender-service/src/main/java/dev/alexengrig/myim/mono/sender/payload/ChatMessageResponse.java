@@ -16,21 +16,17 @@
 
 package dev.alexengrig.myim.mono.sender.payload;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
+import lombok.Builder;
+import lombok.Data;
 
-@Getter
-@Setter
-@SuperBuilder
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
-public class ChatMessageResponse extends MessageResponse {
+@Data
+@Builder
+public class ChatMessageResponse {
 
+    private String id;
     private String chatId;
     private String authorId;
     private String authorName;
+    private String text;
 
 }

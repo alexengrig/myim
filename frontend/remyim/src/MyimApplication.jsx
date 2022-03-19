@@ -38,7 +38,6 @@ const MyimApplication = () => {
       })
   }
   const handleSend = (chatId, text) => {
-    const newMessage = { text }
     fetch(`http://localhost:8080/api/v1/recipient/chats/${chatId}/messages`, {
       method: 'POST',
       headers: {
@@ -46,7 +45,7 @@ const MyimApplication = () => {
         'Content-Type': 'application/json',
         [CSRF_HEADER_NAME]: getCsrfToken(),
       },
-      body: JSON.stringify(newMessage)
+      body: text
     })
       .then(response => response.json())
       .then(({ chatId, description, type }) => {

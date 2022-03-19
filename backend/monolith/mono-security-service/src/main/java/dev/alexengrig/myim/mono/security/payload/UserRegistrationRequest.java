@@ -21,17 +21,13 @@ import dev.alexengrig.myim.mono.security.validation.VerifiedPassword;
 import dev.alexengrig.myim.mono.security.validation.VerifiedUsername;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 
-@Getter
-@Setter
+@Data
 @Builder
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @MatchingFieldsValues(

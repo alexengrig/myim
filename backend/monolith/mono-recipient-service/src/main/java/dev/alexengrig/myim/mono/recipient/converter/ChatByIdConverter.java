@@ -16,13 +16,26 @@
 
 package dev.alexengrig.myim.mono.recipient.converter;
 
-import dev.alexengrig.myim.mono.recipient.config.MapStructConfiguration;
-import dev.alexengrig.myim.mono.recipient.domain.ChatMessage;
-import dev.alexengrig.myim.mono.recipient.payload.ChatMessageRequest;
-import org.mapstruct.Mapper;
+import dev.alexengrig.myim.mono.domain.Chat;
+import dev.alexengrig.myim.mono.store.entity.ChatEntity;
+import dev.alexengrig.myim.mono.store.repository.ChatRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
-@Mapper(config = MapStructConfiguration.class)
-public interface ChatMessageRequest2ChatMessageConverter
-        extends Converter<ChatMessageRequest, ChatMessage> {
+@Component
+@RequiredArgsConstructor
+public class ChatByIdConverter
+        implements Converter<String, Chat> {
+
+    private final ChatRepository chatRepository;
+    private final ConversionService conversionService;
+
+    @Override
+    public Chat convert(String chatId) {
+        ChatEntity entity = chatRepository.getById(chatId);
+        return conversionService.convert(entity, Chat.class);
+    }
+
 }

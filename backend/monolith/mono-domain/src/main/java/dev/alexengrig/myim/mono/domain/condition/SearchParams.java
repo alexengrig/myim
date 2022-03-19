@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.sender.domain;
+package dev.alexengrig.myim.mono.domain.condition;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
-@Getter
-@Setter
+@Data
 @SuperBuilder
-@ToString(callSuper = true)
-public class ChatMessage extends Message {
+public class SearchParams {
 
-    private String chatId;
-    private Author author;
+    private int page;
+    private int size;
 
 }

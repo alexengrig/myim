@@ -15,8 +15,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -26,30 +26,9 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mono-sender-service</artifactId>
+    <artifactId>mono-domain</artifactId>
 
-    <name>sender-service</name>
-    <description>Monolithic myim sender service</description>
-
-    <dependencies>
-        <dependency>
-            <groupId>dev.alexengrig.myim</groupId>
-            <artifactId>mono-domain</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct.extensions.spring</groupId>
-            <artifactId>mapstruct-spring-annotations</artifactId>
-        </dependency>
-    </dependencies>
+    <name>domain</name>
+    <description>Monolithic myim domains</description>
 
 </project>

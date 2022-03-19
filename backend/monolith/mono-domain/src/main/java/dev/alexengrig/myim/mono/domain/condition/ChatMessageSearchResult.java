@@ -14,10 +14,17 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.sender.domain;
+package dev.alexengrig.myim.mono.domain.condition;
 
+import dev.alexengrig.myim.mono.domain.ChatMessage;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+@Data
 @SuperBuilder
-public class ChatSearchResult extends SearchResult<ChatSearchParams, Chat> {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class ChatMessageSearchResult extends SearchResult<ChatMessage> {
 }

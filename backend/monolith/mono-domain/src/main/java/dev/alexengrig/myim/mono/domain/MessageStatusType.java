@@ -14,24 +14,10 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.recipient.payload;
+package dev.alexengrig.myim.mono.domain;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
+public enum MessageStatusType {
 
-@Getter
-@Setter
-@ToString(callSuper = true)
-@SuperBuilder
-public class ChatMessageRequest extends MessageRequest {
-
-    private String chatId;
-
-    protected ChatMessageRequest(MessageRequest parent, String chatId) {
-        super(parent);
-        this.chatId = chatId;
-    }
+    SENT
 
 }

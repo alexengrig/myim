@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.sender.domain;
+package dev.alexengrig.myim.mono.sender.payload.condition;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
-@Getter
-@Setter
+import java.util.List;
+
+@Data
 @SuperBuilder
-@ToString(callSuper = true)
-public class MessageSearchParams extends SearchParams {
+public class SearchResponse<T> {
+
+    private List<T> values;
+    private long total;
+
 }

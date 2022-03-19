@@ -16,7 +16,7 @@
 
 package dev.alexengrig.myim.mono.sender.converter;
 
-import dev.alexengrig.myim.mono.sender.domain.Chat;
+import dev.alexengrig.myim.mono.domain.Chat;
 import dev.alexengrig.myim.mono.sender.payload.ChatResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

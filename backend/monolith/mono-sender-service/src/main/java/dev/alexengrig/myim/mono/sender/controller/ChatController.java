@@ -16,10 +16,14 @@
 
 package dev.alexengrig.myim.mono.sender.controller;
 
-import dev.alexengrig.myim.mono.sender.domain.*;
-import dev.alexengrig.myim.mono.sender.payload.ChatMessageSearchResponse;
+import dev.alexengrig.myim.mono.domain.Chat;
+import dev.alexengrig.myim.mono.domain.condition.ChatMessageSearchParams;
+import dev.alexengrig.myim.mono.domain.condition.ChatMessageSearchResult;
+import dev.alexengrig.myim.mono.domain.condition.ChatSearchParams;
+import dev.alexengrig.myim.mono.domain.condition.ChatSearchResult;
 import dev.alexengrig.myim.mono.sender.payload.ChatResponse;
-import dev.alexengrig.myim.mono.sender.payload.ChatSearchResponse;
+import dev.alexengrig.myim.mono.sender.payload.condition.ChatMessageSearchResponse;
+import dev.alexengrig.myim.mono.sender.payload.condition.ChatSearchResponse;
 import dev.alexengrig.myim.mono.sender.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,23 +41,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ChatController {
 
+    private static final String DEFAULT_CHATS_PAGE = "0";
     private static final String DEFAULT_CHATS_SIZE = "10";
-    private static final String DEFAULT_CHATS_OFFSET = "0";
 
+    private static final String DEFAULT_MESSAGES_PAGE = "0";
     private static final String DEFAULT_MESSAGES_SIZE = "10";
-    private static final String DEFAULT_MESSAGES_OFFSET = "0";
 
     private final ChatService chatService;
     private final ConversionService conversionService;
 
     @GetMapping
     public ResponseEntity<ChatSearchResponse> getChats(
-            @RequestParam(defaultValue = DEFAULT_CHATS_SIZE) int size,
-            @RequestParam(defaultValue = DEFAULT_CHATS_OFFSET) int offset) {
-        log.info("Chats getting request: size={}, offset={}", size, offset);
+            @RequestParam(defaultValue = DEFAULT_CHATS_PAGE) int page,
+            @RequestParam(defaultValue = DEFAULT_CHATS_SIZE) int size) {
+        log.info("Chats getting request: page={}, size={}", page, size);
         ChatSearchParams params = ChatSearchParams.builder()
+                .page(page)
                 .size(size)
-                .offset(offset)
                 .build();
         ChatSearchResult result = chatService.searchChats(params);
         ChatSearchResponse response = conversionService.convert(result, ChatSearchResponse.class);
@@ -74,13 +78,13 @@ public class ChatController {
     @GetMapping("/{chatId}/messages")
     public ResponseEntity<ChatMessageSearchResponse> getMessages(
             @PathVariable String chatId,
-            @RequestParam(defaultValue = DEFAULT_MESSAGES_SIZE) int size,
-            @RequestParam(defaultValue = DEFAULT_MESSAGES_OFFSET) int offset) {
-        log.info("Messages getting request: chatId={}, size={}, offset={}", chatId, size, offset);
+            @RequestParam(defaultValue = DEFAULT_MESSAGES_PAGE) int page,
+            @RequestParam(defaultValue = DEFAULT_MESSAGES_SIZE) int size) {
+        log.info("Messages getting request: chatId={}, page={}, size={}", chatId, page, size);
         ChatMessageSearchParams params = ChatMessageSearchParams.builder()
                 .chatId(chatId)
+                .page(page)
                 .size(size)
-                .offset(offset)
                 .build();
         ChatMessageSearchResult result = chatService.searchMessages(params);
         ChatMessageSearchResponse response = conversionService.convert(result, ChatMessageSearchResponse.class);

@@ -14,24 +14,16 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.sender.payload;
+package dev.alexengrig.myim.mono.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
+import lombok.Builder;
+import lombok.Data;
 
-import java.util.List;
+@Data
+@Builder
+public class Author {
 
-@Getter
-@Setter
-@ToString
-@SuperBuilder
-@EqualsAndHashCode
-public class SearchResponse<T> {
-
-    private List<T> values;
-    private long total;
+    private String id;
+    private String name;
 
 }

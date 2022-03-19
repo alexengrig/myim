@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.recipient.domain;
+package dev.alexengrig.myim.mono.domain;
 
-public enum MessageStatusType {
+import lombok.Builder;
+import lombok.Data;
 
-    SENT
+@Data
+@Builder
+public class Chat {
+
+    private String id;
+    private String name;
 
 }

@@ -16,11 +16,8 @@
 
 package dev.alexengrig.myim.mono.recipient.controller;
 
-import dev.alexengrig.myim.mono.recipient.domain.ChatMessage;
-import dev.alexengrig.myim.mono.recipient.domain.ChatMessageStatus;
-import dev.alexengrig.myim.mono.recipient.payload.ChatMessageRequest;
+import dev.alexengrig.myim.mono.domain.ChatMessageStatus;
 import dev.alexengrig.myim.mono.recipient.payload.ChatMessageStatusResponse;
-import dev.alexengrig.myim.mono.recipient.payload.MessageRequest;
 import dev.alexengrig.myim.mono.recipient.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,11 +41,9 @@ public class ChatController {
     @PostMapping("/{chatId}/messages")
     public ResponseEntity<ChatMessageStatusResponse> createMessage(
             @PathVariable String chatId,
-            @RequestBody MessageRequest messageRequest) {
-        ChatMessageRequest request = messageRequest.withChatId(chatId);
-        log.info("Message creation request: {}", request);
-        ChatMessage message = conversionService.convert(request, ChatMessage.class);
-        ChatMessageStatus status = chatService.sendMessage(message);
+            @RequestBody String text) {
+        log.info("Message creation request: chatId={}, text={}", chatId, text);
+        ChatMessageStatus status = chatService.sendMessage(chatId, text);
         ChatMessageStatusResponse response = conversionService.convert(status, ChatMessageStatusResponse.class);
         log.info("Message creation response: {}", response);
         return ResponseEntity.ok(response);

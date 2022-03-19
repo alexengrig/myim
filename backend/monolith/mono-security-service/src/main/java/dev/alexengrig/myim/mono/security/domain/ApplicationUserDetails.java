@@ -17,10 +17,8 @@
 package dev.alexengrig.myim.mono.security.domain;
 
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Singular;
 import lombok.ToString;
 import lombok.With;
@@ -28,11 +26,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-@Getter
+@Data
 @Builder
-@ToString
-@EqualsAndHashCode
-@RequiredArgsConstructor
 public class ApplicationUserDetails implements UserDetails {
 
     @NonNull
