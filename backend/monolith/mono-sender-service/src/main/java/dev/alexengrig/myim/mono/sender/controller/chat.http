@@ -1,4 +1,4 @@
-GET http://localhost:8080/api/v1/sender/chats?size=2&offset=0
+GET http://localhost:8080/api/v1/sender/chats?page=0&size=1
 Accept: application/json
 
 ###
