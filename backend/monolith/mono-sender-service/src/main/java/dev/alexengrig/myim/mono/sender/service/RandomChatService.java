@@ -16,7 +16,13 @@
 
 package dev.alexengrig.myim.mono.sender.service;
 
-import dev.alexengrig.myim.mono.sender.domain.*;
+import dev.alexengrig.myim.mono.domain.Author;
+import dev.alexengrig.myim.mono.domain.Chat;
+import dev.alexengrig.myim.mono.domain.ChatMessage;
+import dev.alexengrig.myim.mono.domain.condition.ChatMessageSearchParams;
+import dev.alexengrig.myim.mono.domain.condition.ChatMessageSearchResult;
+import dev.alexengrig.myim.mono.domain.condition.ChatSearchParams;
+import dev.alexengrig.myim.mono.domain.condition.ChatSearchResult;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,7 +62,6 @@ public class RandomChatService implements ChatService {
                 })
                 .collect(Collectors.toList());
         return ChatSearchResult.builder()
-                .params(params)
                 .values(values)
                 .total(params.getSize())
                 .build();
@@ -64,17 +69,16 @@ public class RandomChatService implements ChatService {
 
     @Override
     public ChatMessageSearchResult searchMessages(ChatMessageSearchParams params) {
-        String chatId = params.getChatId();
+        String chatId = params.getChatIds().iterator().next();
         List<ChatMessage> values = IntStream.rangeClosed(1, params.getSize())
                 .mapToObj(this::randomText)
                 .map(text -> ChatMessage.builder()
-                        .chatId(chatId)
+                        .chat(getChatById(chatId))
                         .text(text)
                         .author(randomAuthor())
                         .build())
                 .collect(Collectors.toList());
         return ChatMessageSearchResult.builder()
-                .params(params)
                 .values(values)
                 .total(params.getSize())
                 .build();

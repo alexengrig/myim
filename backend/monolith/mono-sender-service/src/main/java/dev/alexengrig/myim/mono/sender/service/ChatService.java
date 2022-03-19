@@ -16,7 +16,11 @@
 
 package dev.alexengrig.myim.mono.sender.service;
 
-import dev.alexengrig.myim.mono.sender.domain.*;
+import dev.alexengrig.myim.mono.domain.Chat;
+import dev.alexengrig.myim.mono.domain.condition.ChatMessageSearchParams;
+import dev.alexengrig.myim.mono.domain.condition.ChatMessageSearchResult;
+import dev.alexengrig.myim.mono.domain.condition.ChatSearchParams;
+import dev.alexengrig.myim.mono.domain.condition.ChatSearchResult;
 
 public interface ChatService {
 
