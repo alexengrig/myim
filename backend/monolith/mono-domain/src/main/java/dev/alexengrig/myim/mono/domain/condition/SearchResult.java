@@ -14,10 +14,18 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.sender.domain;
+package dev.alexengrig.myim.mono.domain.condition;
 
+import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
+@Data
 @SuperBuilder
-public class MessageSearchResult extends SearchResult<MessageSearchParams, Message> {
+public class SearchResult<T> {
+
+    private List<T> values;
+    private long total;
+
 }

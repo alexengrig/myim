@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.sender.domain;
+package dev.alexengrig.myim.mono.domain.condition;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
-@Getter
-@Setter
-@Builder
-@ToString
-public class Author {
+@Data
+@SuperBuilder
+public class SearchParams {
 
-    private String id;
-    private String name;
+    private int page;
+    private int size;
 
 }

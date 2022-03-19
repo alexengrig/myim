@@ -14,21 +14,23 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.recipient.domain;
+package dev.alexengrig.myim.mono.domain.condition;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Singular;
 import lombok.experimental.SuperBuilder;
 
-@Getter
-@Setter
-@ToString
-@SuperBuilder
-@EqualsAndHashCode
-public class Message {
+import java.util.Set;
 
-    private String text;
+@Data
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+public class ChatMessageSearchParams extends SearchParams {
+
+    @Singular
+    private Set<String> chatIds;
+    @Singular
+    private Set<String> authorIds;
 
 }

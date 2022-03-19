@@ -14,10 +14,18 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.sender.domain;
+package dev.alexengrig.myim.mono.domain;
 
-import lombok.experimental.SuperBuilder;
+import lombok.Builder;
+import lombok.Data;
 
-@SuperBuilder
-public class ChatMessageSearchResult extends SearchResult<ChatMessageSearchParams, ChatMessage> {
+@Data
+@Builder
+public class ChatMessageStatus {
+
+    private String id;
+    private String description;
+    private ChatMessage message;
+    private MessageStatusType type;
+
 }

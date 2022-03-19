@@ -14,21 +14,10 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.recipient.domain;
+package dev.alexengrig.myim.mono.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
+public enum MessageStatusType {
 
-@Getter
-@Setter
-@SuperBuilder
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
-public class ChatMessage extends Message {
-
-    private String chatId;
+    SENT
 
 }
