@@ -16,8 +16,8 @@
 
 package dev.alexengrig.myim.mono.recipient.service;
 
-import dev.alexengrig.myim.mono.recipient.domain.ChatMessage;
-import dev.alexengrig.myim.mono.recipient.domain.ChatMessageStatus;
+import dev.alexengrig.myim.mono.domain.ChatMessage;
+import dev.alexengrig.myim.mono.domain.ChatMessageStatus;
 
 public interface ChatService {
 

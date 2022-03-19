@@ -16,8 +16,8 @@
 
 package dev.alexengrig.myim.mono.recipient.controller;
 
-import dev.alexengrig.myim.mono.recipient.domain.ChatMessage;
-import dev.alexengrig.myim.mono.recipient.domain.ChatMessageStatus;
+import dev.alexengrig.myim.mono.domain.ChatMessage;
+import dev.alexengrig.myim.mono.domain.ChatMessageStatus;
 import dev.alexengrig.myim.mono.recipient.payload.ChatMessageRequest;
 import dev.alexengrig.myim.mono.recipient.payload.ChatMessageStatusResponse;
 import dev.alexengrig.myim.mono.recipient.payload.MessageRequest;
