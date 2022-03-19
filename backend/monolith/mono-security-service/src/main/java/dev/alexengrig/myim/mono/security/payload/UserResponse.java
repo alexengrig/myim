@@ -17,16 +17,10 @@
 package dev.alexengrig.myim.mono.security.payload;
 
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @Builder
-@ToString
-@EqualsAndHashCode
 public class UserResponse {
 
     private String id;
