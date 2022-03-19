@@ -16,7 +16,6 @@
 
 package dev.alexengrig.myim.mono.recipient.payload;
 
-import dev.alexengrig.myim.mono.recipient.domain.MessageStatusType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +30,6 @@ import lombok.experimental.SuperBuilder;
 public class MessageStatusResponse {
 
     private String description;
-    private MessageStatusType type;
+    private String type;
 
 }
