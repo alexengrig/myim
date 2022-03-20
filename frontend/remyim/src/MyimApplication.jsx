@@ -14,31 +14,17 @@
  * limitations under the License.
  */
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Chat, Chats, Logout, NoChat } from './components'
 import { useUserContext } from './contexts'
 import { CSRF_HEADER_NAME, getCsrfToken } from './utils/csrf'
 
 const MyimApplication = () => {
   const user = useUserContext()
+  const [chatId, setChatId] = useState(null)
   const [chat, setChat] = useState(null)
-  const handleChatFetch = chatId => {
-    fetch(`http://localhost:8080/api/v1/sender/chats/${chatId}`, {
-      headers: {
-        'Accept': 'application/json',
-        [CSRF_HEADER_NAME]: getCsrfToken(),
-      },
-    })
-      .then(response => response.json())
-      .then(({ id, name }) => {
-        setChat({
-          id: id,
-          name: name,
-        })
-      })
-  }
   const handleSend = (chatId, text) => {
-    fetch(`http://localhost:8080/api/v1/recipient/chats/${chatId}/messages`, {
+    return fetch(`http://localhost:8080/api/v1/recipient/chats/${chatId}/messages`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -52,13 +38,33 @@ const MyimApplication = () => {
         console.log(chatId, description, type)
       })
   }
+  useEffect(() => {
+    const handleChatFetch = () => {
+      fetch(`http://localhost:8080/api/v1/sender/chats/${chatId}`, {
+        headers: {
+          'Accept': 'application/json',
+          [CSRF_HEADER_NAME]: getCsrfToken(),
+        },
+      })
+        .then(response => response.json())
+        .then(({ id, name }) => {
+          setChat({
+            id: id,
+            name: name,
+          })
+        })
+    }
+    if (chatId) {
+      handleChatFetch()
+    }
+  }, [chatId])
   return (
     <>
       <div>
         <h1>myim | {user.name}</h1>
         <Chats
-          selected={chat}
-          onClick={handleChatFetch}
+          selected={chatId}
+          onClick={setChatId}
         />
         {chat ?
           <Chat

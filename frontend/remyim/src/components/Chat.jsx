@@ -39,30 +39,31 @@ const ChatBody = ({ messages, error, onSend }) => {
 const Chat = ({ value: { id, name }, onSend = () => {} }) => {
   const [messages, setMessages] = useState(null)
   const [error, setError] = useState(null)
+  const handleMessagesFetch = () => {
+    fetch(`http://localhost:8080/api/v1/sender/chats/${id}/messages`, {
+      headers: {
+        'Accept': 'application/json',
+        [CSRF_HEADER_NAME]: getCsrfToken(),
+      },
+    })
+      .then(response => response.json())
+      .then(data => data.values)
+      .then((messages = []) => {
+        setMessages(messages.map(({ chatId, text, authorId, authorName }) => ({
+          text: text,
+          author: {
+            id: authorId,
+            name: authorName
+          }
+        })))
+      })
+      .catch(error => setError(error))
+  }
   const handleMessageSend = message => {
     onSend(id, message)
+      .then(handleMessagesFetch)
   }
   useEffect(() => {
-    const handleMessagesFetch = () => {
-      fetch(`http://localhost:8080/api/v1/sender/chats/${id}/messages`, {
-        headers: {
-          'Accept': 'application/json',
-          [CSRF_HEADER_NAME]: getCsrfToken(),
-        },
-      })
-        .then(response => response.json())
-        .then(data => data.values)
-        .then((messages = []) => {
-          setMessages(messages.map(({ chatId, text, authorId, authorName }) => ({
-            text: text,
-            author: {
-              id: authorId,
-              name: authorName
-            }
-          })))
-        })
-        .catch(error => setError(error))
-    }
     handleMessagesFetch()
   }, [id])
   return (
