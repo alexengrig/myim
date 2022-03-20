@@ -23,6 +23,8 @@ import java.util.Optional;
 
 public interface AuthorRepository extends JpaRepository<AuthorEntity, String> {
 
+    AuthorEntity getByUsername(String username);
+
     Optional<AuthorEntity> findByUsername(String username);
 
     void deleteByUsername(String username);
