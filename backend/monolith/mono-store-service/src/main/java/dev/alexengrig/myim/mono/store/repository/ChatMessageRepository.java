@@ -20,9 +20,21 @@ import dev.alexengrig.myim.mono.store.entity.ChatMessageEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.Set;
 
 public interface ChatMessageRepository extends JpaRepository<ChatMessageEntity, String> {
 
-    Page<ChatMessageEntity> findAllByChatId(Pageable pageable, String chatId);
+    @Query("""
+            select e from ChatMessageEntity e
+            where (':chatIds' = '()' or e.chat.id in :chatIds)
+              and (':authorIds' = '()' or e.author.id in :authorIds)
+            """)
+    Page<ChatMessageEntity> search(
+            Pageable pageable,
+            @Param("chatIds") Set<String> chatIds,
+            @Param("authorIds") Set<String> authorIds);
 
 }
