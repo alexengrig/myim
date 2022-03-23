@@ -16,19 +16,9 @@
 
 package dev.alexengrig.myim.mono.store.repository;
 
-import dev.alexengrig.myim.mono.store.entity.AuthorEntity;
+import dev.alexengrig.myim.mono.store.entity.ChatMessageStatusEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
-
-public interface AuthorRepository extends JpaRepository<AuthorEntity, String> {
-
-    AuthorEntity getByUsername(String username);
-
-    Optional<AuthorEntity> findByUsername(String username);
-
-    void deleteByUsername(String username);
-
-    boolean existsByUsername(String username);
-
+public interface ChatMessageStatusRepository
+        extends JpaRepository<ChatMessageStatusEntity, String> {
 }

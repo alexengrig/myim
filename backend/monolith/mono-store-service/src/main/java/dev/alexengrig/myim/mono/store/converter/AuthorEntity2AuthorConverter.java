@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.store.repository;
+package dev.alexengrig.myim.mono.store.converter;
 
+import dev.alexengrig.myim.mono.domain.Author;
+import dev.alexengrig.myim.mono.store.config.MapStructConfiguration;
 import dev.alexengrig.myim.mono.store.entity.AuthorEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.mapstruct.Mapper;
+import org.springframework.core.convert.converter.Converter;
 
-import java.util.Optional;
+@Mapper(config = MapStructConfiguration.class)
+public interface AuthorEntity2AuthorConverter
+        extends Converter<AuthorEntity, Author> {
 
-public interface AuthorRepository extends JpaRepository<AuthorEntity, String> {
-
-    AuthorEntity getByUsername(String username);
-
-    Optional<AuthorEntity> findByUsername(String username);
-
-    void deleteByUsername(String username);
-
-    boolean existsByUsername(String username);
+    @Override
+    Author convert(AuthorEntity source);
 
 }

@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.store.repository;
+package dev.alexengrig.myim.mono.store.converter;
 
-import dev.alexengrig.myim.mono.store.entity.AuthorEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+import dev.alexengrig.myim.mono.domain.Chat;
+import dev.alexengrig.myim.mono.store.config.MapStructConfiguration;
+import dev.alexengrig.myim.mono.store.entity.ChatEntity;
+import org.mapstruct.Mapper;
+import org.springframework.core.convert.converter.Converter;
 
-import java.util.Optional;
+@Mapper(config = MapStructConfiguration.class)
+public interface ChatEntity2ChatConverter
+        extends Converter<ChatEntity, Chat> {
 
-public interface AuthorRepository extends JpaRepository<AuthorEntity, String> {
-
-    AuthorEntity getByUsername(String username);
-
-    Optional<AuthorEntity> findByUsername(String username);
-
-    void deleteByUsername(String username);
-
-    boolean existsByUsername(String username);
+    @Override
+    Chat convert(ChatEntity source);
 
 }

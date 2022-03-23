@@ -25,6 +25,10 @@ public interface ApplicationUserDetailsManager extends UserDetailsManager {
 
     ApplicationUserDetails getCurrentUser();
 
+    default String getCurrentUsername() {
+        return getCurrentUser().getUsername();
+    }
+
     @Override
     ApplicationUserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 

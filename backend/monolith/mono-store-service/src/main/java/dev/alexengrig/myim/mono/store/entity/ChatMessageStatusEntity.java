@@ -31,16 +31,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "chat_message")
+@Table(name = "chat_message_status")
 @Getter
 @Setter
 @Builder
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatMessageEntity {
+public class ChatMessageStatusEntity {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -48,15 +49,18 @@ public class ChatMessageEntity {
     @Column(nullable = false)
     private String id;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @ToString.Exclude
-    private ChatEntity chat;
+    @Column(nullable = false, updatable = false)
+    @Builder.Default
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @ToString.Exclude
-    private AuthorEntity author;
+    private ChatMessageEntity message;
 
     @Column(nullable = false)
-    private String text;
+    private String description;
+
+    @Column(nullable = false)
+    private String type;
 
 }

@@ -37,6 +37,10 @@
         </dependency>
         <dependency>
             <groupId>dev.alexengrig.myim</groupId>
+            <artifactId>mono-security-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>dev.alexengrig.myim</groupId>
             <artifactId>mono-store-service</artifactId>
         </dependency>
 

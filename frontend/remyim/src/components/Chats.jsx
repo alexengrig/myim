@@ -19,8 +19,7 @@ import { useEffect, useState } from 'react'
 import { CSRF_HEADER_NAME, getCsrfToken } from '../utils/csrf'
 import { ChatList, NoChatList } from './index'
 
-const Chats = ({ selected, onClick = () => {} }) => {
-  const selectedId = selected && selected.id
+const Chats = ({ selected: selectedId, onClick = () => {} }) => {
   const [chats, setChats] = useState(null)
   const [error, setError] = useState(null)
   const handleChatsFetch = () => {

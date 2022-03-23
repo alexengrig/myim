@@ -14,21 +14,16 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.store.repository;
+package dev.alexengrig.myim.mono.store.config;
 
-import dev.alexengrig.myim.mono.store.entity.AuthorEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.mapstruct.InjectionStrategy;
+import org.mapstruct.MapperConfig;
+import org.mapstruct.extensions.spring.SpringMapperConfig;
 
-import java.util.Optional;
-
-public interface AuthorRepository extends JpaRepository<AuthorEntity, String> {
-
-    AuthorEntity getByUsername(String username);
-
-    Optional<AuthorEntity> findByUsername(String username);
-
-    void deleteByUsername(String username);
-
-    boolean existsByUsername(String username);
-
+@SpringMapperConfig(conversionServiceAdapterClassName = "StoreConversionServiceAdapter")
+@MapperConfig(
+        componentModel = "spring",
+        uses = StoreConversionServiceAdapter.class,
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+public interface MapStructConfiguration {
 }
