@@ -16,14 +16,12 @@
 
 package dev.alexengrig.myim.mono.manager.service;
 
-import dev.alexengrig.myim.mono.domain.Chat;
+import dev.alexengrig.myim.mono.domain.ChatMessage;
 
-public interface ChatManagerService {
+public interface ChatMessageManagerService {
 
-    Chat create(Chat chat);
+    ChatMessage updateTextById(String id, String text);
 
-    Chat update(Chat chat);
-
-    Chat removeById(String id);
+    ChatMessage removeById(String id);
 
 }

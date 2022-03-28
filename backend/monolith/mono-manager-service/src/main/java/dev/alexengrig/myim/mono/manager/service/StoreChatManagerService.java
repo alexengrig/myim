@@ -49,10 +49,10 @@ public class StoreChatManagerService implements ChatManagerService {
     }
 
     @Override
-    public Chat remove(String chatId) {
-        ChatEntity entity = chatRepository.getById(chatId);
+    public Chat removeById(String id) {
+        ChatEntity entity = chatRepository.getById(id);
         Chat chat = conversionService.convert(entity, Chat.class);
-        chatRepository.deleteById(chatId);
+        chatRepository.deleteById(id);
         return chat;
     }
 
