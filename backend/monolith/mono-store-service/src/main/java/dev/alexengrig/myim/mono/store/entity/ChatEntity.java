@@ -24,11 +24,14 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "chat")
@@ -45,6 +48,13 @@ public class ChatEntity {
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Column(nullable = false)
     private String id;
+
+    @OneToMany(
+            mappedBy = "chat",
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true)
+    @ToString.Exclude
+    private List<ChatMessageEntity> messages;
 
     @Column(nullable = false)
     private String name;

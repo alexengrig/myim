@@ -24,13 +24,16 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "chat_message")
@@ -55,6 +58,13 @@ public class ChatMessageEntity {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @ToString.Exclude
     private AuthorEntity author;
+
+    @OneToMany(
+            mappedBy = "message",
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true)
+    @ToString.Exclude
+    private List<ChatMessageStatusEntity> statuses;
 
     @Column(nullable = false)
     private String text;
