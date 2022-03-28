@@ -31,4 +31,29 @@
     <name>manager-service</name>
     <description>Monolithic myim manager service</description>
 
+    <dependencies>
+        <dependency>
+            <groupId>dev.alexengrig.myim</groupId>
+            <artifactId>mono-domain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>dev.alexengrig.myim</groupId>
+            <artifactId>mono-store-service</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct.extensions.spring</groupId>
+            <artifactId>mapstruct-spring-annotations</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
