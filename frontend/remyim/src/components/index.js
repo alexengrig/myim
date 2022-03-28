@@ -15,11 +15,14 @@
  */
 
 export { default as Chat, ChatPropTypes } from './Chat'
+export { default as ChatCreating, ChatCreatingPropTypes } from './ChatCreating'
+export { default as ChatEditingButton, ChatEditingButtonPropTypes } from './ChatEditingButton'
 export { default as ChatItem, ChatItemPropTypes } from './ChatItem'
 export { default as ChatList, ChatListPropTypes } from './ChatList'
 export { default as ChatMessageInput, ChatMessageInputPropTypes } from './ChatMessageInput'
 export { default as ChatMessageItem, ChatMessageItemPropTypes } from './ChatMessageItem'
 export { default as ChatMessageList, ChatMessageListPropTypes } from './ChatMessageList'
+export { default as ChatRemovingButton, ChatRemovingButtonPropTypes } from './ChatRemovingButton'
 export { default as Chats, ChatsPropTypes } from './Chats'
 export { default as Logout } from './Logout'
 export { default as NoChat } from './NoChat'

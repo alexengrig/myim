@@ -14,17 +14,54 @@
  * limitations under the License.
  */
 
+import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { ChatEditingButton, ChatRemovingButton } from './index'
 
-const ChatItem = ({ id, name, selected, onClick = () => {} }) => {
-  const handleClick = () => {
-    onClick(id)
+const ChatName = props => {
+  const { value, selected, editable, onClick, onChange } = props
+  if (editable) {
+    return (
+      <input
+        value={value}
+        onChange={e => onChange(e.target.value)}
+      />
+    )
+  }
+  const Component = props => selected
+    ? <strong {...props}/>
+    : <span {...props}/>
+  return (
+    <Component onClick={onClick}>
+      {value}
+    </Component>
+  )
+}
+
+const ChatItem = props => {
+  const { id, name, selected, onClick = () => {}, onRename, onRemove } = props
+  const [editable, setEditable] = useState(false)
+  const [newName, setNewName] = useState(name)
+  const handleEdit = () => {
+    if (editable) {
+      onRename(newName)
+    }
+    setEditable(!editable)
+  }
+  const handleRemove = () => {
+    onRemove(id)
   }
   return (
-    <div onClick={handleClick}>
-      {selected ?
-        <strong>{name}</strong> :
-        <span>{name}</span>}
+    <div>
+      <ChatName
+        value={editable ? newName : name}
+        selected={selected}
+        editable={editable}
+        onClick={onClick}
+        onChange={setNewName}
+      />
+      <ChatEditingButton onClick={handleEdit}/>
+      <ChatRemovingButton onClick={handleRemove}/>
     </div>
   )
 }
@@ -33,7 +70,9 @@ export const ChatItemPropTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
   selected: PropTypes.bool,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  onRename: PropTypes.func,
+  onRemove: PropTypes.func,
 }
 
 ChatItem.propTypes = ChatItemPropTypes

@@ -17,7 +17,7 @@
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import { CSRF_HEADER_NAME, getCsrfToken } from '../utils/csrf'
-import { ChatList, NoChatList } from './index'
+import { ChatCreating, ChatList, NoChatList } from './index'
 
 const Chats = ({ selected: selectedId, onClick = () => {} }) => {
   const [chats, setChats] = useState(null)
@@ -39,6 +39,42 @@ const Chats = ({ selected: selectedId, onClick = () => {} }) => {
       })
       .catch(error => setError(error))
   }
+  const handleChatRemove = chatId => {
+    fetch(`http://localhost:8080/api/v1/manager/chats/${chatId}`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        [CSRF_HEADER_NAME]: getCsrfToken(),
+      }
+    })
+      .then(response => response.json())
+      .then(chat => {
+        console.debug('Removed chat', chat)
+        handleChatsFetch()
+      })
+      .catch(error => {
+        console.error('Error of chat removing', error)
+      })
+  }
+  const handleChatUpdate = (chatId, chat) => {
+    fetch(`http://localhost:8080/api/v1/manager/chats/${chatId}`, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        [CSRF_HEADER_NAME]: getCsrfToken(),
+      },
+      body: JSON.stringify(chat)
+    })
+      .then(response => response.json())
+      .then(chat => {
+        console.debug('Updated chat', chat)
+        handleChatsFetch()
+      })
+      .catch(error => {
+        console.error('Error of chat updating', error)
+      })
+  }
   useEffect(() => {
     handleChatsFetch()
   }, [])
@@ -50,8 +86,11 @@ const Chats = ({ selected: selectedId, onClick = () => {} }) => {
             value={chats}
             selected={selectedId}
             onClick={onClick}
+            onUpdate={handleChatUpdate}
+            onRemove={handleChatRemove}
           /> :
           <NoChatList/>}
+        <ChatCreating onCreate={handleChatsFetch}/>
       </>
     )
   } else if (error) {
