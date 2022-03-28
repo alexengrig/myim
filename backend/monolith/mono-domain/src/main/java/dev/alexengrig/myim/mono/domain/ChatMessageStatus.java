@@ -19,11 +19,14 @@ package dev.alexengrig.myim.mono.domain;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 public class ChatMessageStatus {
 
     private String id;
+    private LocalDateTime createdAt;
     private String description;
     private ChatMessage message;
     private MessageStatusType type;
