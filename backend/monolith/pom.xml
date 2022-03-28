@@ -28,12 +28,13 @@
     <description>Monolithic myim application</description>
 
     <modules>
+        <module>mono-domain</module>
+        <module>mono-manager-service</module>
         <module>mono-recipient-service</module>
         <module>mono-runner</module>
         <module>mono-security-service</module>
         <module>mono-sender-service</module>
         <module>mono-store-service</module>
-        <module>mono-domain</module>
     </modules>
 
     <properties>
@@ -61,6 +62,11 @@
             <dependency>
                 <groupId>dev.alexengrig.myim</groupId>
                 <artifactId>mono-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>dev.alexengrig.myim</groupId>
+                <artifactId>mono-manager-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
