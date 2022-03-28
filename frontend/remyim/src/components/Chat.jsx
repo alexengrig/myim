@@ -19,12 +19,16 @@ import { ChatMessageInput, ChatMessageList, NoChatMessageList } from './index'
 import { useEffect, useState } from 'react'
 import { CSRF_HEADER_NAME, getCsrfToken } from '../utils/csrf'
 
-const ChatBody = ({ messages, error, onSend }) => {
+const ChatBody = ({ messages, error, onSend, onTextUpdate, onRemove }) => {
   if (messages) {
     return (
       <>
         {messages.length ?
-          <ChatMessageList value={messages}/> :
+          <ChatMessageList
+            value={messages}
+            onTextUpdate={onTextUpdate}
+            onRemove={onRemove}
+          /> :
           <NoChatMessageList/>}
         <ChatMessageInput onSend={onSend}/>
       </>
@@ -49,7 +53,8 @@ const Chat = ({ value: { id, name }, onSend = () => {} }) => {
       .then(response => response.json())
       .then(data => data.values)
       .then((messages = []) => {
-        setMessages(messages.map(({ chatId, text, authorId, authorName }) => ({
+        setMessages(messages.map(({ id, chatId, text, authorId, authorName }) => ({
+          id,
           text: text,
           author: {
             id: authorId,
@@ -63,6 +68,42 @@ const Chat = ({ value: { id, name }, onSend = () => {} }) => {
     onSend(id, message)
       .then(handleMessagesFetch)
   }
+  const handleTextUpdate = (messageId, text) => {
+    fetch(`http://localhost:8080/api/v1/manager/chats/${id}/messages/${messageId}`, {
+      method: 'PATCH',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'text/plain',
+        [CSRF_HEADER_NAME]: getCsrfToken(),
+      },
+      body: text
+    })
+      .then(response => response.json())
+      .then(chatMessage => {
+        console.debug('Updated chat message text', chatMessage)
+        handleMessagesFetch()
+      })
+      .catch(error => {
+        console.error('Error of chat message text updating', error)
+      })
+  }
+  const handleRemove = messageId => {
+    fetch(`http://localhost:8080/api/v1/manager/chats/${id}/messages/${messageId}`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        [CSRF_HEADER_NAME]: getCsrfToken(),
+      },
+    })
+      .then(response => response.json())
+      .then(chatMessage => {
+        console.debug('Removed chat message', chatMessage)
+        handleMessagesFetch()
+      })
+      .catch(error => {
+        console.error('Error of chat message removing', error)
+      })
+  }
   useEffect(() => {
     handleMessagesFetch()
   }, [id])
@@ -73,6 +114,8 @@ const Chat = ({ value: { id, name }, onSend = () => {} }) => {
         messages={messages}
         error={error}
         onSend={handleMessageSend}
+        onTextUpdate={handleTextUpdate}
+        onRemove={handleRemove}
       />
     </div>
   )

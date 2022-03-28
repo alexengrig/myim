@@ -21,27 +21,26 @@ const ChatList = props => {
   const {
     value: chats = [],
     selected: selectedId,
-    onClick = () => {},
-    onUpdate = () => {},
-    onRemove = () => {},
+    onClick,
+    onUpdate,
+    onRemove,
   } = props
   return (
     <ul>
       {chats.map((chat, index) => {
-        const chatId = chat.id
-        const handleClick = () => {
-          onClick(chatId)
+        const handleClick = id => {
+          onClick(id)
         }
-        const handleRename = newName => {
-          return onUpdate(chatId, { ...chat, name: newName })
+        const handleRename = (id, name) => {
+          return onUpdate(id, { ...chat, name })
         }
-        const handleRemove = () => {
-          onRemove(chatId)
+        const handleRemove = id => {
+          onRemove(id)
         }
         return (
           <ChatItem
             key={index}
-            selected={chatId === selectedId}
+            selected={selectedId}
             onClick={handleClick}
             onRename={handleRename}
             onRemove={handleRemove}

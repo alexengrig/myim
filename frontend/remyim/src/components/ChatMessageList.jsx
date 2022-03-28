@@ -17,16 +17,25 @@
 import PropTypes from 'prop-types'
 import { ChatMessageItem } from './index'
 
-const ChatMessageList = ({ value: messages = [] }) => (
+const ChatMessageList = ({ value: messages = [], onTextUpdate, onRemove }) => (
   <ul>
-    {messages.map((message, index) => (
-      <ChatMessageItem key={index} {...message}/>
-    ))}
+    {messages.map((message, index) => {
+      return (
+        <ChatMessageItem
+          key={index}
+          onTextUpdate={onTextUpdate}
+          onRemove={onRemove}
+          {...message}
+        />
+      )
+    })}
   </ul>
 )
 
 export const ChatMessageListPropTypes = {
-  value: PropTypes.arrayOf(PropTypes.object)
+  value: PropTypes.arrayOf(PropTypes.object),
+  onTextUpdate: PropTypes.func,
+  onRemove: PropTypes.func,
 }
 
 ChatMessageList.propTypes = ChatMessageListPropTypes

@@ -39,12 +39,15 @@ const ChatName = props => {
 }
 
 const ChatItem = props => {
-  const { id, name, selected, onClick = () => {}, onRename, onRemove } = props
+  const { id, name, selected, onClick, onRename, onRemove } = props
   const [editable, setEditable] = useState(false)
   const [newName, setNewName] = useState(name)
+  const handleClick = () => {
+    onClick(id)
+  }
   const handleEdit = () => {
     if (editable) {
-      onRename(newName)
+      onRename(id, newName)
     }
     setEditable(!editable)
   }
@@ -55,9 +58,9 @@ const ChatItem = props => {
     <div>
       <ChatName
         value={editable ? newName : name}
-        selected={selected}
         editable={editable}
-        onClick={onClick}
+        selected={selected === id}
+        onClick={handleClick}
         onChange={setNewName}
       />
       <ChatEditingButton onClick={handleEdit}/>
@@ -69,7 +72,7 @@ const ChatItem = props => {
 export const ChatItemPropTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
-  selected: PropTypes.bool,
+  selected: PropTypes.string,
   onClick: PropTypes.func,
   onRename: PropTypes.func,
   onRemove: PropTypes.func,
