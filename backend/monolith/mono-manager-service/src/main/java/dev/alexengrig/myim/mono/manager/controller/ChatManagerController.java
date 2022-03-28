@@ -17,16 +17,21 @@
 package dev.alexengrig.myim.mono.manager.controller;
 
 import dev.alexengrig.myim.mono.domain.Chat;
+import dev.alexengrig.myim.mono.domain.ChatMessage;
 import dev.alexengrig.myim.mono.manager.payload.CreatingChatRequest;
 import dev.alexengrig.myim.mono.manager.payload.CreatingChatResponse;
+import dev.alexengrig.myim.mono.manager.payload.RemovingChatMessageResponse;
 import dev.alexengrig.myim.mono.manager.payload.RemovingChatResponse;
+import dev.alexengrig.myim.mono.manager.payload.UpdatingChatMessageResponse;
 import dev.alexengrig.myim.mono.manager.payload.UpdatingChatRequest;
 import dev.alexengrig.myim.mono.manager.payload.UpdatingChatResponse;
 import dev.alexengrig.myim.mono.manager.service.ChatManagerService;
+import dev.alexengrig.myim.mono.manager.service.ChatMessageManagerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -40,6 +45,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatManagerController {
 
     private final ChatManagerService chatManagerService;
+    private final ChatMessageManagerService chatMessageManagerService;
     private final ConversionService conversionService;
 
     @PostMapping
@@ -65,8 +71,27 @@ public class ChatManagerController {
     @DeleteMapping("/{chatId}")
     public ResponseEntity<RemovingChatResponse> removeChat(
             @PathVariable String chatId) {
-        Chat result = chatManagerService.remove(chatId);
+        Chat result = chatManagerService.removeById(chatId);
         RemovingChatResponse response = conversionService.convert(result, RemovingChatResponse.class);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/{chatId}/messages/{messageId}")
+    public ResponseEntity<UpdatingChatMessageResponse> updateMessage(
+            @PathVariable String chatId,
+            @PathVariable String messageId,
+            @RequestBody String text) {
+        ChatMessage result = chatMessageManagerService.updateTextById(messageId, text);
+        UpdatingChatMessageResponse response = conversionService.convert(result, UpdatingChatMessageResponse.class);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{chatId}/messages/{messageId}")
+    public ResponseEntity<RemovingChatMessageResponse> removeMessage(
+            @PathVariable String chatId,
+            @PathVariable String messageId) {
+        ChatMessage result = chatMessageManagerService.removeById(messageId);
+        RemovingChatMessageResponse response = conversionService.convert(result, RemovingChatMessageResponse.class);
         return ResponseEntity.ok(response);
     }
 
