@@ -34,11 +34,15 @@
     <dependencies>
         <dependency>
             <groupId>dev.alexengrig.myim</groupId>
-            <artifactId>mono-security-service</artifactId>
+            <artifactId>mono-manager-service</artifactId>
         </dependency>
         <dependency>
             <groupId>dev.alexengrig.myim</groupId>
             <artifactId>mono-recipient-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>dev.alexengrig.myim</groupId>
+            <artifactId>mono-security-service</artifactId>
         </dependency>
         <dependency>
             <groupId>dev.alexengrig.myim</groupId>
