@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2022 Alexengrig Dev.
  *
@@ -14,21 +15,19 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.domain;
+package dev.alexengrig.myim.mono.manager.converter;
 
-import lombok.Builder;
-import lombok.Data;
+import dev.alexengrig.myim.mono.domain.Chat;
+import dev.alexengrig.myim.mono.manager.config.MapStructConfiguration;
+import dev.alexengrig.myim.mono.manager.payload.UpdatingChatResponse;
+import org.mapstruct.Mapper;
+import org.springframework.core.convert.converter.Converter;
 
-import java.time.LocalDateTime;
+@Mapper(config = MapStructConfiguration.class)
+public interface Chat2UpdatingChatResponseConverter
+        extends Converter<Chat, UpdatingChatResponse> {
 
-@Data
-@Builder
-public class ChatMessageStatus {
-
-    private String id;
-    private LocalDateTime createdAt;
-    private String description;
-    private ChatMessage message;
-    private MessageStatusType type;
+    @Override
+    UpdatingChatResponse convert(Chat source);
 
 }

@@ -14,21 +14,16 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.domain;
+package dev.alexengrig.myim.mono.manager.config;
 
-import lombok.Builder;
-import lombok.Data;
+import org.mapstruct.InjectionStrategy;
+import org.mapstruct.MapperConfig;
+import org.mapstruct.extensions.spring.SpringMapperConfig;
 
-import java.time.LocalDateTime;
-
-@Data
-@Builder
-public class ChatMessageStatus {
-
-    private String id;
-    private LocalDateTime createdAt;
-    private String description;
-    private ChatMessage message;
-    private MessageStatusType type;
-
+@SpringMapperConfig(conversionServiceAdapterClassName = "ManagerConversionServiceAdapter")
+@MapperConfig(
+        componentModel = "spring",
+        uses = ManagerConversionServiceAdapter.class,
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+public interface MapStructConfiguration {
 }

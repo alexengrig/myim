@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.domain;
+package dev.alexengrig.myim.mono.manager.service;
 
-import lombok.Builder;
-import lombok.Data;
+import dev.alexengrig.myim.mono.domain.ChatMessage;
 
-import java.time.LocalDateTime;
+public interface ChatMessageManagerService {
 
-@Data
-@Builder
-public class ChatMessageStatus {
+    ChatMessage updateTextById(String id, String text);
 
-    private String id;
-    private LocalDateTime createdAt;
-    private String description;
-    private ChatMessage message;
-    private MessageStatusType type;
+    ChatMessage removeById(String id);
 
 }

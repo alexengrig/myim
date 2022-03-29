@@ -16,18 +16,67 @@
 
 import PropTypes from 'prop-types'
 import { useUserContext } from '../contexts'
+import { useState } from 'react'
 
 const Author = ({ value: { id, name } }) => {
   const { id: userId } = useUserContext()
   return userId === id ?
-    <strong>{name}</strong> :
-    <span>{name}</span>
+    <strong>{name}: </strong> :
+    <span>{name}: </span>
 }
 
-const ChatMessageItem = ({ id, text, author }) => {
+const Text = ({ value, editable, onChange }) => {
+  if (editable) {
+    return (
+      <input
+        value={value}
+        onChange={e => onChange(e.target.value)}
+      />
+    )
+  }
+  return (
+    <span>{value}</span>
+  )
+}
+
+const EditButton = ({ onClick }) => {
+  return (
+    <button onClick={onClick}>
+      Edit
+    </button>
+  )
+}
+
+const RemoveButton = ({ onClick }) => {
+  return (
+    <button onClick={onClick}>
+      Remove
+    </button>
+  )
+}
+
+const ChatMessageItem = ({ id, text, author, onTextUpdate, onRemove }) => {
+  const [editable, setEditable] = useState(false)
+  const [newText, setNewText] = useState(text)
+  const handleEdit = () => {
+    if (editable) {
+      onTextUpdate(id, newText)
+    }
+    setEditable(!editable)
+  }
+  const handleRemove = () => {
+    onRemove(id)
+  }
   return (
     <div>
-      <Author value={author}/>: {text}
+      <Author value={author}/>
+      <Text
+        value={editable ? newText : text}
+        editable={editable}
+        onChange={setNewText}
+      />
+      <EditButton onClick={handleEdit}/>
+      <RemoveButton onClick={handleRemove}/>
     </div>
   )
 }
@@ -39,6 +88,8 @@ export const ChatMessageItemPropTypes = {
     id: PropTypes.string,
     name: PropTypes.string,
   }),
+  onTextUpdate: PropTypes.func,
+  onRemove: PropTypes.func,
 }
 
 ChatMessageItem.propTypes = ChatMessageItemPropTypes

@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.domain;
+import PropTypes from 'prop-types'
 
-import lombok.Builder;
-import lombok.Data;
-
-import java.time.LocalDateTime;
-
-@Data
-@Builder
-public class ChatMessageStatus {
-
-    private String id;
-    private LocalDateTime createdAt;
-    private String description;
-    private ChatMessage message;
-    private MessageStatusType type;
-
+const ChatRemovingButton = ({ onClick }) => {
+  return (
+    <button onClick={onClick}>
+      Remove
+    </button>
+  )
 }
+
+export const ChatRemovingButtonPropTypes = {
+  onClick: PropTypes.func
+}
+
+ChatRemovingButton.propTypes = ChatRemovingButtonPropTypes
+
+export default ChatRemovingButton
