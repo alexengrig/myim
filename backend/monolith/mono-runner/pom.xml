@@ -34,6 +34,10 @@
     <dependencies>
         <dependency>
             <groupId>dev.alexengrig.myim</groupId>
+            <artifactId>mono-contact-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>dev.alexengrig.myim</groupId>
             <artifactId>mono-manager-service</artifactId>
         </dependency>
         <dependency>
