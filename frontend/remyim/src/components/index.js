@@ -24,6 +24,7 @@ export { default as ChatMessageItem, ChatMessageItemPropTypes } from './ChatMess
 export { default as ChatMessageList, ChatMessageListPropTypes } from './ChatMessageList'
 export { default as ChatRemovingButton, ChatRemovingButtonPropTypes } from './ChatRemovingButton'
 export { default as Chats, ChatsPropTypes } from './Chats'
+export { default as Contacts, ContactsPropTypes } from './Contacts'
 export { default as Logout } from './Logout'
 export { default as NoChat } from './NoChat'
 export { default as NoChatList } from './NoChatList'

@@ -15,7 +15,7 @@
  */
 
 import { useEffect, useState } from 'react'
-import { Chat, Chats, Logout, NoChat } from './components'
+import { Chat, Chats, Contacts, Logout, NoChat } from './components'
 import { useUserContext } from './contexts'
 import { CSRF_HEADER_NAME, getCsrfToken } from './utils/csrf'
 
@@ -72,6 +72,7 @@ const MyimApplication = () => {
             onSend={handleSend}
           /> :
           <NoChat/>}
+        <Contacts/>
       </div>
       <Logout/>
     </>
