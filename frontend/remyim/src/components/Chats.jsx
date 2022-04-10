@@ -80,7 +80,8 @@ const Chats = ({ selected: selectedId, onClick = () => {} }) => {
   }, [])
   if (chats) {
     return (
-      <>
+      <div>
+        <h2>Chats</h2>
         {chats.length ?
           <ChatList
             value={chats}
@@ -91,7 +92,7 @@ const Chats = ({ selected: selectedId, onClick = () => {} }) => {
           /> :
           <NoChatList/>}
         <ChatCreating onCreate={handleChatsFetch}/>
-      </>
+      </div>
     )
   } else if (error) {
     return <div>Chats loading error: {error}</div>
