@@ -28,6 +28,7 @@
     <description>Monolithic myim application</description>
 
     <modules>
+        <module>mono-contact-service</module>
         <module>mono-domain</module>
         <module>mono-manager-service</module>
         <module>mono-recipient-service</module>
@@ -58,6 +59,11 @@
                 <version>${spring.boot.dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>dev.alexengrig.myim</groupId>
+                <artifactId>mono-contact-service</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>dev.alexengrig.myim</groupId>
