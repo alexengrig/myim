@@ -22,6 +22,8 @@ import dev.alexengrig.myim.mono.store.entity.AuthorEntity;
 import dev.alexengrig.myim.mono.store.repository.AuthorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -41,7 +43,15 @@ public class StoreUserDetailsManager implements ApplicationUserDetailsManager {
     @Override
     public ApplicationUserDetails getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return (ApplicationUserDetails) auth.getPrincipal();
+        if (auth == null) {
+            throw new AuthenticationServiceException("No authentication");
+        }
+        Object principal = auth.getPrincipal();
+        if (principal instanceof ApplicationUserDetails) {
+            return (ApplicationUserDetails) principal;
+        }
+        throw new InternalAuthenticationServiceException(
+                "Expected ApplicationUserDetails, but actual: " + principal.getClass());
     }
 
     @Override
