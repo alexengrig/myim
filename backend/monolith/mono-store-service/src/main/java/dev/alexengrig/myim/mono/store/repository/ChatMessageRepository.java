@@ -29,8 +29,8 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessageEntity, 
 
     @Query("""
             select e from ChatMessageEntity e
-            where (':chatIds' = '()' or e.chat.id in :chatIds)
-              and (':authorIds' = '()' or e.author.id in :authorIds)
+            where (':chatIds' = '(null)' or e.chat.id in :chatIds)
+              and (':authorIds' = '(null)' or e.author.id in :authorIds)
             """)
     Page<ChatMessageEntity> search(
             Pageable pageable,
