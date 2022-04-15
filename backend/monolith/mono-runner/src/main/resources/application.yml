@@ -7,12 +7,10 @@ application:
 
 spring:
   datasource:
-    url: jdbc:h2:mem:myimdb
-    driverClassName: org.h2.Driver
+    url: jdbc:postgresql://localhost:5432/myimdb
     username: user
     password: pass
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
   web:
