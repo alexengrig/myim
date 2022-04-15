@@ -24,6 +24,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class StoreChatManagerService implements ChatManagerService {
@@ -36,6 +39,17 @@ public class StoreChatManagerService implements ChatManagerService {
         ChatEntity entity = conversionService.convert(chat, ChatEntity.class);
         ChatEntity savedEntity = chatRepository.save(entity);
         return conversionService.convert(savedEntity, Chat.class);
+    }
+
+    @Override
+    public List<Chat> createAll(List<Chat> chats) {
+        List<ChatEntity> entities = chats.stream()
+                .map(chat -> conversionService.convert(chat, ChatEntity.class))
+                .collect(Collectors.toList());
+        List<ChatEntity> savedEntities = chatRepository.saveAll(entities);
+        return savedEntities.stream()
+                .map(entity -> conversionService.convert(entity, Chat.class))
+                .collect(Collectors.toList());
     }
 
     @Override

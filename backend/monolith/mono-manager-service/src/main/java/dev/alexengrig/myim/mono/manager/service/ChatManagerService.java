@@ -18,9 +18,13 @@ package dev.alexengrig.myim.mono.manager.service;
 
 import dev.alexengrig.myim.mono.domain.Chat;
 
+import java.util.List;
+
 public interface ChatManagerService {
 
     Chat create(Chat chat);
+
+    List<Chat> createAll(List<Chat> chats);
 
     Chat update(Chat chat);
 
