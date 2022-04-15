@@ -18,7 +18,9 @@ package dev.alexengrig.myim.mono.listener;
 
 import dev.alexengrig.myim.mono.domain.Chat;
 import dev.alexengrig.myim.mono.manager.service.ChatManagerService;
+import dev.alexengrig.myim.mono.recipient.service.ChatService;
 import dev.alexengrig.myim.mono.security.domain.ApplicationUserDetails;
+import dev.alexengrig.myim.mono.security.service.ApplicationUserAuthenticationService;
 import dev.alexengrig.myim.mono.security.service.ApplicationUserDetailsManager;
 import dev.alexengrig.myim.mono.store.repository.ChatRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,11 +52,14 @@ public class DefaultValuesCreationOnApplicationReadyListener
     private static final String CHAT_NAME_PREFIX = "Chat#";
 
     private final ApplicationUserDetailsManager userManager;
+    private final ApplicationUserAuthenticationService authService;
 
     private final ChatRepository chatRepository;
 
     private final ChatManagerService chatManagerService;
+    private final ChatService chatService;
 
+    @Transactional
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
         createDefaultUsersIfNeed();
@@ -86,9 +92,14 @@ public class DefaultValuesCreationOnApplicationReadyListener
                             .name(name)
                             .build())
                     .collect(Collectors.toList());
-            chatManagerService.createAll(newChats);
+            List<Chat> chats = chatManagerService.createAll(newChats);
             log.info("Development chats: {}X (X = [{}-{}])",
                     CHAT_NAME_PREFIX, FIRST_CHAT_NUMBER, LAST_CHAT_NUMBER);
+            getUsernames().forEach(username -> {
+                authService.authenticateByUsername(username);
+                chats.forEach(chat ->
+                        chatService.sendMessage(chat.getId(), "Message by " + username + " to " + chat.getName()));
+            });
         }
     }
 
