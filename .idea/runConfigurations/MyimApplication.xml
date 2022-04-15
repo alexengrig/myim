@@ -8,6 +8,7 @@
       </pattern>
     </extension>
     <option name="SPRING_BOOT_MAIN_CLASS" value="dev.alexengrig.myim.mono.MyimApplication" />
+    <option name="VM_PARAMETERS" value="-Dspring.profiles.active=development" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <method v="2">
       <option name="Make" enabled="true" />

@@ -14,20 +14,10 @@
  * limitations under the License.
  */
 
-package dev.alexengrig.myim.mono.manager.service;
+package dev.alexengrig.myim.mono.security.service;
 
-import dev.alexengrig.myim.mono.domain.Chat;
+public interface ApplicationUserAuthenticationService {
 
-import java.util.List;
-
-public interface ChatManagerService {
-
-    Chat create(Chat chat);
-
-    List<Chat> createAll(List<Chat> chats);
-
-    Chat update(Chat chat);
-
-    Chat removeById(String id);
+    void authenticateByUsername(String username);
 
 }

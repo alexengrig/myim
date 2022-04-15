@@ -22,23 +22,31 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Slf4j
 @Component
+@Profile("development")
 @RequiredArgsConstructor
-public class DefaultUserCreationOnApplicationReadyListener implements ApplicationListener<ApplicationReadyEvent> {
+public class AdminCreationOnApplicationReadyListener implements ApplicationListener<ApplicationReadyEvent> {
 
     private final ApplicationUserDetailsManager userDetailsManager;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent ignore) {
-        if (!userDetailsManager.userExists("admin")) {
-            userDetailsManager.createUser(ApplicationUserDetails.builder()
-                    .username("admin")
-                    .password("admin")
-                    .build());
-        }
+        Stream.concat(Stream.of("admin"), IntStream.rangeClosed(0, 9).mapToObj(i -> "user" + i))
+                .forEach(username -> {
+                    if (!userDetailsManager.userExists(username)) {
+                        userDetailsManager.createUser(ApplicationUserDetails.builder()
+                                .username(username)
+                                .password(username)
+                                .build());
+                    }
+                });
         log.info("Default user: admin/admin");
     }
 
