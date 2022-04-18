@@ -18,17 +18,29 @@ import PropTypes from 'prop-types'
 import { ChatMessageInput, ChatMessageList, NoChatMessageList } from './index'
 import { useEffect, useState } from 'react'
 import { CSRF_HEADER_NAME, getCsrfToken } from '../utils/csrf'
+import { useInterval } from '../hooks'
 
-const ChatBody = ({ messages, error, onSend, onTextUpdate, onRemove }) => {
+const ChatBody = props => {
+  const {
+    messages, error,
+    onSend, onTextUpdate, onRemove, hasPrev, onPrev, onNext, onUpdate
+  } = props
   if (messages) {
     return (
       <>
         {messages.length ?
-          <ChatMessageList
-            value={messages}
-            onTextUpdate={onTextUpdate}
-            onRemove={onRemove}
-          /> :
+          <>
+            <ChatMessageList
+              value={messages}
+              onTextUpdate={onTextUpdate}
+              onRemove={onRemove}
+            />
+            <div>
+              <button onClick={onPrev} disabled={!hasPrev}>Previous</button>
+              <button onClick={onNext}>Next</button>
+              <button onClick={onUpdate}>Update</button>
+            </div>
+          </> :
           <NoChatMessageList/>}
         <ChatMessageInput onSend={onSend}/>
       </>
@@ -41,10 +53,19 @@ const ChatBody = ({ messages, error, onSend, onTextUpdate, onRemove }) => {
 }
 
 const Chat = ({ value: { id, name }, onSend = () => {} }) => {
+  const [page, setPage] = useState(0)
+  const [size, setSize] = useState(8)
   const [messages, setMessages] = useState(null)
   const [error, setError] = useState(null)
+  const handlePrevPageGo = () => {
+    const prevPage = page - 1
+    setPage(prevPage < 0 ? 0 : prevPage)
+  }
+  const handleNextPageGo = () => {
+    setPage(page + 1)
+  }
   const handleMessagesFetch = () => {
-    fetch(`http://localhost:8080/api/v1/sender/chats/${id}/messages`, {
+    fetch(`http://localhost:8080/api/v1/sender/chats/${id}/messages?page=${page}&size=${size}`, {
       headers: {
         'Accept': 'application/json',
         [CSRF_HEADER_NAME]: getCsrfToken(),
@@ -53,14 +74,18 @@ const Chat = ({ value: { id, name }, onSend = () => {} }) => {
       .then(response => response.json())
       .then(data => data.values)
       .then((messages = []) => {
-        setMessages(messages.map(({ id, chatId, text, authorId, authorName }) => ({
-          id,
-          text: text,
-          author: {
-            id: authorId,
-            name: authorName
-          }
-        })))
+        if (messages.length > 0) {
+          setMessages(messages.map(({ id, chatId, text, authorId, authorName }) => ({
+            id,
+            text: text,
+            author: {
+              id: authorId,
+              name: authorName
+            }
+          })))
+        } else {
+          handlePrevPageGo()
+        }
       })
       .catch(error => setError(error))
   }
@@ -104,9 +129,10 @@ const Chat = ({ value: { id, name }, onSend = () => {} }) => {
         console.error('Error of chat message removing', error)
       })
   }
+  useInterval(handleMessagesFetch, 2500, [id, page, size])
   useEffect(() => {
     handleMessagesFetch()
-  }, [id])
+  }, [id, page, size])
   return (
     <div>
       <h3>{name}</h3>
@@ -116,6 +142,10 @@ const Chat = ({ value: { id, name }, onSend = () => {} }) => {
         onSend={handleMessageSend}
         onTextUpdate={handleTextUpdate}
         onRemove={handleRemove}
+        hasPrev={page > 0}
+        onPrev={handlePrevPageGo}
+        onNext={handleNextPageGo}
+        onUpdate={handleMessagesFetch}
       />
     </div>
   )

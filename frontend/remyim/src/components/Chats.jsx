@@ -20,10 +20,19 @@ import { CSRF_HEADER_NAME, getCsrfToken } from '../utils/csrf'
 import { ChatCreating, ChatList, NoChatList } from './index'
 
 const Chats = ({ selected: selectedId, onClick = () => {} }) => {
+  const [page, setPage] = useState(0)
+  const [size, setSize] = useState(8)
   const [chats, setChats] = useState(null)
   const [error, setError] = useState(null)
+  const handlePrevPageGo = () => {
+    const prevPage = page - 1
+    setPage(prevPage < 0 ? 0 : prevPage)
+  }
+  const handleNextPageGo = () => {
+    setPage(page + 1)
+  }
   const handleChatsFetch = () => {
-    fetch('http://localhost:8080/api/v1/sender/chats', {
+    fetch(`http://localhost:8080/api/v1/sender/chats?page=${page}&size=${size}`, {
       headers: {
         'Accept': 'application/json',
         [CSRF_HEADER_NAME]: getCsrfToken(),
@@ -32,10 +41,14 @@ const Chats = ({ selected: selectedId, onClick = () => {} }) => {
       .then(response => response.json())
       .then(data => data.values)
       .then((chats = []) => {
-        setChats(chats.map(({ id, name }) => ({
-          id: id,
-          name: name
-        })))
+        if (chats.length > 0) {
+          setChats(chats.map(({ id, name }) => ({
+            id: id,
+            name: name
+          })))
+        } else {
+          handlePrevPageGo()
+        }
       })
       .catch(error => setError(error))
   }
@@ -77,19 +90,26 @@ const Chats = ({ selected: selectedId, onClick = () => {} }) => {
   }
   useEffect(() => {
     handleChatsFetch()
-  }, [])
+  }, [size, page])
   if (chats) {
     return (
       <div>
         <h2>Chats</h2>
         {chats.length ?
-          <ChatList
-            value={chats}
-            selected={selectedId}
-            onClick={onClick}
-            onUpdate={handleChatUpdate}
-            onRemove={handleChatRemove}
-          /> :
+          <>
+            <ChatList
+              value={chats}
+              selected={selectedId}
+              onClick={onClick}
+              onUpdate={handleChatUpdate}
+              onRemove={handleChatRemove}
+            />
+            <div>
+              <button onClick={handlePrevPageGo} disabled={page <= 0}>Previous</button>
+              <button onClick={handleNextPageGo}>Next</button>
+              <button onClick={handleChatsFetch}>Update</button>
+            </div>
+          </> :
           <NoChatList/>}
         <ChatCreating onCreate={handleChatsFetch}/>
       </div>
