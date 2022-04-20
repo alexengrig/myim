@@ -16,19 +16,20 @@
 
 import PropTypes from 'prop-types'
 import { useRef } from 'react'
-import { CSRF_HEADER_NAME, getCsrfToken } from '../utils/csrf'
+import { useEnvContext } from '../contexts'
 
 const ChatCreating = ({ onCreate }) => {
+  const { baseUrl, csrfHeader, csrfToken } = useEnvContext()
   const nameInput = useRef(null)
   const handleClick = () => {
     const name = nameInput.current.value
     const newChat = { name }
-    fetch('http://localhost:8080/api/v1/manager/chats', {
+    fetch(`${baseUrl}/api/v1/manager/chats`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        [CSRF_HEADER_NAME]: getCsrfToken(),
+        [csrfHeader]: csrfToken,
       },
       body: JSON.stringify(newChat)
     })
