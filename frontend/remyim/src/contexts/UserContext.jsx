@@ -15,7 +15,7 @@
  */
 
 import { createContext, useContext, useEffect, useState } from 'react'
-import { CSRF_HEADER_NAME, getCsrfToken } from '../utils/csrf'
+import { useEnvContext } from './index'
 
 const defaultUser = {
   id: null,
@@ -25,14 +25,15 @@ const defaultUser = {
 const UserContext = createContext(defaultUser)
 
 export const UserContextProvider = ({ children }) => {
+  const { baseUrl, csrfHeader, csrfToken } = useEnvContext()
   const [user, setUser] = useState(null)
   const [error, setError] = useState(null)
   useEffect(() => {
-    fetch('http://localhost:8080/api/v1/users/current', {
+    fetch(`${baseUrl}/api/v1/users/current`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        [CSRF_HEADER_NAME]: getCsrfToken(),
+        [csrfHeader]: csrfToken,
       },
     })
       .then(response => response.json())
@@ -42,7 +43,7 @@ export const UserContextProvider = ({ children }) => {
       .catch(error => {
         setError(error)
       })
-  }, [])
+  }, [baseUrl])
   if (user) {
     return <UserContext.Provider value={user} children={children}/>
   } else if (error) {

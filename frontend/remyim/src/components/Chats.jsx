@@ -16,10 +16,11 @@
 
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
-import { CSRF_HEADER_NAME, getCsrfToken } from '../utils/csrf'
 import { ChatCreating, ChatList, NoChatList } from './index'
+import { useEnvContext } from '../contexts'
 
 const Chats = ({ selected: selectedId, onClick = () => {} }) => {
+  const { baseUrl, csrfHeader, csrfToken } = useEnvContext()
   const [page, setPage] = useState(0)
   const [size, setSize] = useState(8)
   const [chats, setChats] = useState(null)
@@ -32,10 +33,10 @@ const Chats = ({ selected: selectedId, onClick = () => {} }) => {
     setPage(page + 1)
   }
   const handleChatsFetch = () => {
-    fetch(`http://localhost:8080/api/v1/sender/chats?page=${page}&size=${size}`, {
+    fetch(`${baseUrl}/api/v1/sender/chats?page=${page}&size=${size}`, {
       headers: {
         'Accept': 'application/json',
-        [CSRF_HEADER_NAME]: getCsrfToken(),
+        [csrfHeader]: csrfToken,
       },
     })
       .then(response => response.json())
@@ -53,11 +54,11 @@ const Chats = ({ selected: selectedId, onClick = () => {} }) => {
       .catch(error => setError(error))
   }
   const handleChatRemove = chatId => {
-    fetch(`http://localhost:8080/api/v1/manager/chats/${chatId}`, {
+    fetch(`${baseUrl}/api/v1/manager/chats/${chatId}`, {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',
-        [CSRF_HEADER_NAME]: getCsrfToken(),
+        [csrfHeader]: csrfToken,
       }
     })
       .then(response => response.json())
@@ -70,12 +71,12 @@ const Chats = ({ selected: selectedId, onClick = () => {} }) => {
       })
   }
   const handleChatUpdate = (chatId, chat) => {
-    fetch(`http://localhost:8080/api/v1/manager/chats/${chatId}`, {
+    fetch(`${baseUrl}/api/v1/manager/chats/${chatId}`, {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        [CSRF_HEADER_NAME]: getCsrfToken(),
+        [csrfHeader]: csrfToken,
       },
       body: JSON.stringify(chat)
     })

@@ -17,13 +17,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import MyimApplication from './MyimApplication'
-import { UserContextProvider } from './contexts'
+import { EnvContextProvider, UserContextProvider } from './contexts'
 
 ReactDOM.render(
   <React.StrictMode>
-    <UserContextProvider>
-      <MyimApplication/>
-    </UserContextProvider>
+    <EnvContextProvider>
+      <UserContextProvider>
+        <MyimApplication/>
+      </UserContextProvider>
+    </EnvContextProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 )

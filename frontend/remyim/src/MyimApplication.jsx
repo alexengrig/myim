@@ -16,20 +16,20 @@
 
 import { useEffect, useState } from 'react'
 import { Chat, Chats, Contacts, Logout, NoChat } from './components'
-import { useUserContext } from './contexts'
-import { CSRF_HEADER_NAME, getCsrfToken } from './utils/csrf'
+import { useEnvContext, useUserContext } from './contexts'
 
 const MyimApplication = () => {
+  const { baseUrl, csrfHeader, csrfToken } = useEnvContext()
   const user = useUserContext()
   const [chatId, setChatId] = useState(null)
   const [chat, setChat] = useState(null)
   const handleSend = (chatId, text) => {
-    return fetch(`http://localhost:8080/api/v1/recipient/chats/${chatId}/messages`, {
+    return fetch(`${baseUrl}/api/v1/recipient/chats/${chatId}/messages`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        [CSRF_HEADER_NAME]: getCsrfToken(),
+        [csrfHeader]: csrfToken,
       },
       body: text
     })
@@ -40,10 +40,10 @@ const MyimApplication = () => {
   }
   useEffect(() => {
     const handleChatFetch = () => {
-      fetch(`http://localhost:8080/api/v1/sender/chats/${chatId}`, {
+      fetch(`${baseUrl}/api/v1/sender/chats/${chatId}`, {
         headers: {
           'Accept': 'application/json',
-          [CSRF_HEADER_NAME]: getCsrfToken(),
+          [csrfHeader]: csrfToken,
         },
       })
         .then(response => response.json())
@@ -57,7 +57,7 @@ const MyimApplication = () => {
     if (chatId) {
       handleChatFetch()
     }
-  }, [chatId])
+  }, [baseUrl, chatId])
   return (
     <>
       <div>

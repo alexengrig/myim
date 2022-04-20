@@ -15,10 +15,11 @@
  */
 
 import { useEffect, useState } from 'react'
-import { CSRF_HEADER_NAME, getCsrfToken } from '../utils/csrf'
+import { useEnvContext } from '../contexts'
 
 const Contacts = () => {
-  const [href, setHref] = useState('http://localhost:8080/api/v1/contacts?size=2')
+  const { baseUrl, csrfHeader, csrfToken } = useEnvContext()
+  const [href, setHref] = useState(`${baseUrl}/api/v1/contacts?size=2`)
   const [prevHref, setPrevHref] = useState(null)
   const [nextHref, setNextHref] = useState(null)
   const [contacts, setContacts] = useState(null)
@@ -33,7 +34,7 @@ const Contacts = () => {
     fetch(href, {
       headers: {
         'Accept': 'application/json',
-        [CSRF_HEADER_NAME]: getCsrfToken(),
+        [csrfHeader]: csrfToken,
       },
     })
       .then(response => response.json())

@@ -17,8 +17,8 @@
 import PropTypes from 'prop-types'
 import { ChatMessageInput, ChatMessageList, NoChatMessageList } from './index'
 import { useEffect, useState } from 'react'
-import { CSRF_HEADER_NAME, getCsrfToken } from '../utils/csrf'
 import { useInterval } from '../hooks'
+import { useEnvContext } from '../contexts'
 
 const ChatBody = props => {
   const {
@@ -53,6 +53,7 @@ const ChatBody = props => {
 }
 
 const Chat = ({ value: { id, name }, onSend = () => {} }) => {
+  const { baseUrl, csrfHeader, csrfToken } = useEnvContext()
   const [page, setPage] = useState(0)
   const [size, setSize] = useState(8)
   const [messages, setMessages] = useState(null)
@@ -65,10 +66,10 @@ const Chat = ({ value: { id, name }, onSend = () => {} }) => {
     setPage(page + 1)
   }
   const handleMessagesFetch = () => {
-    fetch(`http://localhost:8080/api/v1/sender/chats/${id}/messages?page=${page}&size=${size}`, {
+    fetch(`${baseUrl}/api/v1/sender/chats/${id}/messages?page=${page}&size=${size}`, {
       headers: {
         'Accept': 'application/json',
-        [CSRF_HEADER_NAME]: getCsrfToken(),
+        [csrfHeader]: csrfToken,
       },
     })
       .then(response => response.json())
@@ -94,12 +95,12 @@ const Chat = ({ value: { id, name }, onSend = () => {} }) => {
       .then(handleMessagesFetch)
   }
   const handleTextUpdate = (messageId, text) => {
-    fetch(`http://localhost:8080/api/v1/manager/chats/${id}/messages/${messageId}`, {
+    fetch(`${baseUrl}/api/v1/manager/chats/${id}/messages/${messageId}`, {
       method: 'PATCH',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'text/plain',
-        [CSRF_HEADER_NAME]: getCsrfToken(),
+        [csrfHeader]: csrfToken,
       },
       body: text
     })
@@ -113,11 +114,11 @@ const Chat = ({ value: { id, name }, onSend = () => {} }) => {
       })
   }
   const handleRemove = messageId => {
-    fetch(`http://localhost:8080/api/v1/manager/chats/${id}/messages/${messageId}`, {
+    fetch(`${baseUrl}/api/v1/manager/chats/${id}/messages/${messageId}`, {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',
-        [CSRF_HEADER_NAME]: getCsrfToken(),
+        [csrfHeader]: csrfToken,
       },
     })
       .then(response => response.json())
