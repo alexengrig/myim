@@ -27,7 +27,6 @@ import org.springframework.core.convert.converter.Converter;
 public interface ApplicationUserDetails2UserResponseConverter
         extends Converter<ApplicationUserDetails, UserResponse> {
 
-    @Mapping(target = "id", source = "username")
     @Mapping(target = "name", source = "username")
     @Override
     UserResponse convert(ApplicationUserDetails source);

@@ -14,7 +14,17 @@
  * limitations under the License.
  */
 
-export * from './ChatContext'
-export * from './EnvContext'
-export * from './MuiThemeContext'
-export * from './UserContext'
+import {createTheme, ThemeProvider} from '@mui/material'
+
+const defaultTheme = {
+  palette: {
+    mode: 'dark'
+  }
+}
+
+const theme = createTheme(defaultTheme)
+
+export const MuiThemeContextProvider = props => {
+  const {children} = props
+  return <ThemeProvider theme={theme} children={children}/>
+}

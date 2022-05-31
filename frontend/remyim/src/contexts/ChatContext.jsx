@@ -14,7 +14,26 @@
  * limitations under the License.
  */
 
-export * from './ChatContext'
-export * from './EnvContext'
-export * from './MuiThemeContext'
-export * from './UserContext'
+import {createContext, useContext, useEffect, useState} from 'react'
+
+const defaultChat = {
+  id: null,
+  setId: () => {
+    console.log('default')
+  }
+}
+
+const ChatContext = createContext(defaultChat)
+
+export const ChatContextProvider = ({children}) => {
+  const [chat, setChat] = useState({
+    id: null
+  })
+  const [value, setValue] = useState({set: setChat, ...chat})
+  useEffect(() => {
+    setValue({set: setChat, ...chat})
+  }, [chat.id])
+  return <ChatContext.Provider value={value} children={children}/>
+}
+
+export const useChatContext = () => useContext(ChatContext)

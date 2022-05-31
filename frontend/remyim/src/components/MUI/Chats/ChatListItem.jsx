@@ -14,7 +14,23 @@
  * limitations under the License.
  */
 
-export * from './ChatContext'
-export * from './EnvContext'
-export * from './MuiThemeContext'
-export * from './UserContext'
+import {ListItemButton, ListItemText} from '@mui/material'
+
+const ChatListItem = props => {
+    const {
+        selectedId, onClick,
+        id, name
+    } = props
+    return (
+        <>
+            <ListItemButton
+                selected={selectedId === id}
+                onClick={onClick}
+            >
+                <ListItemText primary={name}/>
+            </ListItemButton>
+        </>
+    )
+}
+
+export default ChatListItem

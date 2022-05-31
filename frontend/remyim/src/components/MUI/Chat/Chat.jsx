@@ -14,7 +14,16 @@
  * limitations under the License.
  */
 
-export * from './ChatContext'
-export * from './EnvContext'
-export * from './MuiThemeContext'
-export * from './UserContext'
+import {useChatContext} from '../../../contexts'
+import {CurrentChat, NoChat} from './index'
+
+const Chat = props => {
+  const {id} = useChatContext()
+  if (id !== null) {
+    return <CurrentChat/>
+  } else {
+    return <NoChat/>
+  }
+}
+
+export default Chat

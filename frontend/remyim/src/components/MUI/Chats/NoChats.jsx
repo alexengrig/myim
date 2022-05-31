@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-export * from './ChatContext'
-export * from './EnvContext'
-export * from './MuiThemeContext'
-export * from './UserContext'
+import {Typography} from '@mui/material'
+
+const NoChats = props => {
+  return (
+      <Typography>Create a new chat</Typography>
+  )
+}
+
+export default NoChats

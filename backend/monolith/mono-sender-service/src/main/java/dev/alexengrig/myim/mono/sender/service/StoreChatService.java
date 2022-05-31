@@ -30,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -64,7 +65,8 @@ public class StoreChatService implements ChatService {
 
     @Override
     public ChatMessageSearchResult searchMessages(ChatMessageSearchParams params) {
-        PageRequest pageable = PageRequest.of(params.getPage(), params.getSize());
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        PageRequest pageable = PageRequest.of(params.getPage(), params.getSize(), sort);
         Page<ChatMessageEntity> page = messageRepository.search(
                 pageable,
                 params.getChatIds(),

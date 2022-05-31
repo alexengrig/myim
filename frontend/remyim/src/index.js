@@ -16,16 +16,18 @@
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import MyimApplication from './MyimApplication'
-import { EnvContextProvider, UserContextProvider } from './contexts'
+import MuiApplication from './MuiApplication'
+import {ChatContextProvider, EnvContextProvider, UserContextProvider} from './contexts'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <EnvContextProvider>
-      <UserContextProvider>
-        <MyimApplication/>
-      </UserContextProvider>
-    </EnvContextProvider>
+    <React.StrictMode>
+        <EnvContextProvider>
+            <UserContextProvider>
+                <ChatContextProvider>
+                    <MuiApplication/>
+                </ChatContextProvider>
+            </UserContextProvider>
+        </EnvContextProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 )

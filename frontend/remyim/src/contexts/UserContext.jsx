@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-import { createContext, useContext, useEffect, useState } from 'react'
-import { useEnvContext } from './index'
+import {createContext, useContext, useEffect, useState} from 'react'
+import {useEnvContext} from './index'
 
 const defaultUser = {
   id: null,
   name: null,
+  username: null,
 }
 
 const UserContext = createContext(defaultUser)
 
-export const UserContextProvider = ({ children }) => {
+export const UserContextProvider = ({children}) => {
   const { baseUrl, csrfHeader, csrfToken } = useEnvContext()
   const [user, setUser] = useState(null)
   const [error, setError] = useState(null)
@@ -36,10 +37,10 @@ export const UserContextProvider = ({ children }) => {
         [csrfHeader]: csrfToken,
       },
     })
-      .then(response => response.json())
-      .then(({ id, name }) => {
-        setUser({ id, name })
-      })
+        .then(response => response.json())
+        .then(({id, name, username}) => {
+          setUser({id, name, username})
+        })
       .catch(error => {
         setError(error)
       })

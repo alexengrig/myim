@@ -30,6 +30,7 @@ import java.util.Collection;
 @Builder
 public class ApplicationUserDetails implements UserDetails {
 
+    private final String id;
     @NonNull
     private final String username;
     @With

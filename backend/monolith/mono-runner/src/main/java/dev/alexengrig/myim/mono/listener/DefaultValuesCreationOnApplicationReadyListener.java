@@ -48,8 +48,12 @@ public class DefaultValuesCreationOnApplicationReadyListener
     private static final String USERNAME_PREFIX = "user";
 
     private static final int FIRST_CHAT_NUMBER = 0;
-    private static final int LAST_CHAT_NUMBER = 9;
+    private static final int LAST_CHAT_NUMBER = 50;
     private static final String CHAT_NAME_PREFIX = "Chat#";
+
+    private static final int FIRST_CHAT_MESSAGE_NUMBER = 0;
+    private static final int LAST_CHAT_MESSAGE_NUMBER = 9;
+    private static final String CHAT_MESSAGE_PREFIX = "Message#";
 
     private final ApplicationUserDetailsManager userManager;
     private final ApplicationUserAuthenticationService authService;
@@ -97,8 +101,9 @@ public class DefaultValuesCreationOnApplicationReadyListener
                     CHAT_NAME_PREFIX, FIRST_CHAT_NUMBER, LAST_CHAT_NUMBER);
             getUsernames().forEach(username -> {
                 authService.authenticateByUsername(username);
-                chats.forEach(chat ->
-                        chatService.sendMessage(chat.getId(), "Message by " + username + " to " + chat.getName()));
+                chats.forEach(chat -> IntStream.rangeClosed(FIRST_CHAT_MESSAGE_NUMBER, LAST_CHAT_MESSAGE_NUMBER)
+                        .mapToObj(i -> CHAT_MESSAGE_PREFIX + i + " by " + username + " to " + chat.getName())
+                        .forEach(text -> chatService.sendMessage(chat.getId(), text)));
             });
         }
     }
